@@ -1,9 +1,20 @@
 package com.woon.web.repositories;
 
+import com.woon.web.entities.WoonUser;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 /**
  * WoonUserRepository
  */
-public interface WoonUserRepository {
+@Repository
+public interface WoonUserRepository extends CrudRepository<WoonUser, Long>{
 
+    // 로그인
+    public WoonUser findUserByEmailIdAndPassword(String id, String password);
+
+    // 마이페이지 접근시 email아이디로 접근
+    public WoonUser findUserByEmailId(String emailId);
     
 }
