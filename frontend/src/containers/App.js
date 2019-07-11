@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Grommet} from 'grommet'
-import {grommet} from 'grommet/themes'
+import {grommet, dark} from 'grommet/themes'
 import WoonGrid  from '../components/WoonGrid'
 import './test.css'
 

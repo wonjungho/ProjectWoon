@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Box,Text,Button} from 'grommet'
+import {Box,Text,Button, TextInput} from 'grommet'
 import {SettingsOption} from 'grommet-icons'
 class WoonChat extends Component{
     render(){
@@ -63,6 +63,7 @@ class WoonChat extends Component{
           direction="row"
           align="center"
         >
+          <TextInput></TextInput>
           <Button color="#8CD790"  label="Submit" />
         </Box>
         </Box>
