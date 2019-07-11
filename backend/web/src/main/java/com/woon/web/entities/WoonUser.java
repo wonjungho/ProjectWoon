@@ -34,8 +34,8 @@ public class WoonUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uno;
 
-    @Column(name = "email_id", nullable = false)
-    private String emailId;
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
     @Column(name = "user_name", nullable = false)
     private String userName;
     @Column(name = "password", nullable = false)

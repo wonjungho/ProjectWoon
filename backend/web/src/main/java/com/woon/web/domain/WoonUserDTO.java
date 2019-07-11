@@ -13,7 +13,7 @@ import lombok.Data;
 @Data @Lazy @Component
 public class WoonUserDTO {
 
-    private String emailId, userName, password, photo;
+    private String userEmail, userName, password, photo;
     private Timestamp signupDate;
     
 }

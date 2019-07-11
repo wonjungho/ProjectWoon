@@ -11,5 +11,5 @@ import lombok.Data;
 @Data@Component@Lazy
 public class WoonGroupDTO {
     private Long groupno;
-    private String groupname, groupintro;
+    private String groupName, groupInfo;
 }

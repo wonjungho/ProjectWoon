@@ -2,6 +2,7 @@ package com.woon.web.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -24,20 +25,22 @@ import lombok.ToString;
 public class WoonGroup implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long groupno;
-    private String groupname;
-    private String groupintro;
+    @Column(name = "group_name")
+    private String groupName;
+    @Column(name = "group_info")
+    private String groupInfo;
 
     @Override
     public String toString(){
         return String.format("GROUP NO: %d\n"
                             +"GROUP NAME: %s\n"
                             +"GROUP INTRO: %s\n"
-        , groupno, groupname, groupintro);
+        , groupno, groupName, groupInfo);
     }
     @Builder
-    private WoonGroup(String groupname, String groupintro){
-        this.groupname = groupname;
-        this.groupintro = groupintro;
+    private WoonGroup(String groupName, String groupInfo){
+        this.groupName = groupName;
+        this.groupInfo = groupInfo;
     }
 
 }
