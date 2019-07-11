@@ -1,17 +1,16 @@
 import React,{Component} from 'react'
-import {Box,Text,Button} from 'grommet'
+import {Box,Text,Anchor} from 'grommet'
+import {AddCircle} from 'grommet-icons'
 
 class WoonUser extends Component{
     render(){
         return(
             <Box margin={{ top:"50%" }}>
-                  {["강감찬", "유관순", "권율"].map(name => (
-                    <Button key={name} href="#" hoverIndicator>
-                      <Box pad={{ horizontal: "medium", vertical: "small" }}>
-                        <Text color="white" className="test">{name}</Text>
-                      </Box>
-                    </Button>
-                  ))}
+                   <Box margin={{ bottom:"50%" }}>
+              <Box pad={{ horizontal: "medium", vertical: "small" }} direction="row">
+              <Text className="test" margin={{top:"12px",right:"60px"}} >User </Text><Anchor icon={<AddCircle />} color="white"/>
+              </Box>    
+            </Box>
                   </Box>
         )
     }

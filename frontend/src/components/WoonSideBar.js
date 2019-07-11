@@ -6,7 +6,6 @@ import WoonUserList from  './WoonUserList'
 class WoonSidebar extends Component{
     render(){
         return(
-            
                 <Box
                   gridArea="sidebar"
                   background="#77AF9C"
@@ -21,8 +20,6 @@ class WoonSidebar extends Component{
                     <WoonUserList/>
                   </Box>
                 </Box>
-                
-             
         )
     }
 }

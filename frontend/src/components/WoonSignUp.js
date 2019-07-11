@@ -8,51 +8,31 @@ class WoonSignUp extends Component{
               onReset={event => console.log(event)}
               onSubmit={({ value }) => console.log("Submit", value)}
             >
+              <FormField label="Email" name="userEmail" type="email" required />
               <FormField
-                label="Name"
-                name="name"
+                label="Password"
+                name="password"
+                type="text"
                 required
-                validate={{ regexp: /^[a-z]/i }}
+                validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
               />
-              <FormField label="Email" name="email" type="email" required />
-              <FormField
-                label="Employee ID"
-                name="employeeId"
+               <FormField
+                label="Name"
+                name="userName"
+                type="text"
                 required
                 validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
               />
               <FormField
-                name="subscribe"
-                component={CheckBox}
-                pad
-                label="Subscribe?"
-              />
-              <FormField
-                name="ampm"
-                component={RadioButtonGroup}
-                pad
-                options={["morning", "evening"]}
-              />
-              <FormField
-                label="Size"
-                name="size"
-                component={Select}
-                onChange={event => console.log(event)}
-                options={["small", "medium", "large", "xlarge"]}
-              />
-              <FormField label="Comments" name="comments" component={TextArea} />
-              <FormField
-                label="Age"
-                name="age"
-                component={RangeInput}
-                pad
-                min={15}
-                max={75}
+                label="Photo"
+                name="photo"
+                type="file"
+                required
+                validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
               />
               <Box direction="row" justify="between" margin={{ top: "medium" }}>
-                <Button label="Cancel" />
-                <Button type="reset" label="Reset" />
                 <Button type="submit" label="Update" primary />
+                <Button type="reset" label="Reset" />
               </Box>
             </Form>
           </Box>

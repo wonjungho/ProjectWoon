@@ -8,7 +8,6 @@ class WoonMain extends Component{
         return(
             <Box gridArea="main" justify="center" align="center">
                 <WoonChat></WoonChat>
-                
             </Box>
         )
     }

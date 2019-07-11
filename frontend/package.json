@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "connected-react-router": "^6.5.0",
     "grommet": "^2.7.2",
     "grommet-icons": "^4.2.0",
+    "history": "^4.9.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-addons-update": "^15.6.2",
     "react-bootstrap": "^1.0.0-beta.9",
@@ -14,6 +17,7 @@
     "react-router": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
     "styled-components": "^4.3.2"
   },
   "scripts": {

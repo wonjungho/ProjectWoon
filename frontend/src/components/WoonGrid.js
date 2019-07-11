@@ -6,8 +6,10 @@ import WoonMain from './WoonMain'
 
 class WoonGrid extends Component{
     state={sidebar:true}
+    constructor(props){
+      super(props)
+    }
     render(){
-        const {sidebar} =this.state
         return(
             <Grid
             fill
