@@ -1,14 +1,14 @@
 package com.woon.web.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,17 +33,15 @@ public class WoonGroup implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @OneToMany //(WoonGroup <->WoonGroupDetail)
     private Long groupno;
     
-    @Column(name = "group_name", nullable = false) private String groupName;   
-    @Column(name = "group_info", nullable = false) private String groupInfo;
-    //table 연관 관계 설정
-    //(WoonGroup <-> WoonUser)    
-    @ManyToOne
-    @JoinColumn(name="uno")
-    private WoonUser uno;
+    @Column(name = "group_name", unique = true, nullable = false) 
+    private String groupName;   
+    @Column(name = "group_info", nullable = false) 
+    private String groupInfo;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "WoonGroups")
+    private List<WoonJoinGroup> woonJoingroups;
 
     @Override
     public String toString(){
