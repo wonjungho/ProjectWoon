@@ -10,10 +10,12 @@ import lombok.Data;
 /**
  * WoonUserDTO
  */
-@Data @Lazy @Component
+@Data
+@Lazy
+@Component
 public class WoonUserDTO {
 
-    private String userEmail, userName, password, photo;
+    private String userEmail, userName, password, profile, profilePath;
     private Timestamp signupDate;
-    
+
 }
