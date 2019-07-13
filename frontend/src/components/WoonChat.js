@@ -16,44 +16,8 @@ class WoonChat extends Component{
           <Text className="test2">그룹원수: 36</Text>
           <SettingsOption size ="large" color="#519D9E" />
         </Box>
-        <Box flex overflow="auto" pad="xsmall" id="content">
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
-          <span className="test1">body</span>
+        <Box flex overflow="auto" pad="xsmall" id="messages">
+          
         </Box>
         <Box
           as="footer"
@@ -63,9 +27,11 @@ class WoonChat extends Component{
           direction="row"
           align="center"
         >
+          <form>
           <Button icon={<Add/>}/>
-          <TextInput></TextInput>
-          <Button color="#8CD790"  label="Submit" />
+          <TextInput id="m"></TextInput>
+          <Button color="#8CD790"  label="send" />
+          </form>
         </Box>
         </Box>
         )

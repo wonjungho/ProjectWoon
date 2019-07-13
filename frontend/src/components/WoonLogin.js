@@ -52,7 +52,7 @@ class WoonLogin extends Component{
                     />
                   </Box>
                   <Box flex={false} as="footer" align="center">
-                  <Anchor href="#">SignUp</Anchor>/<Anchor>FindMyInfo</Anchor>
+                  <Anchor href="/signup">SignUp</Anchor>/<Anchor>FindMyInfo</Anchor>
                   </Box>
                     </Box>
                   </Layer>

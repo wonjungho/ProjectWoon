@@ -1,13 +1,16 @@
 import React,{Component} from 'react'
-import {Box,Form,FormField,Button,CheckBox,RadioButtonGroup,Select,TextArea,RangeInput} from 'grommet'
+import {Box,Form,FormField,Button,Heading} from 'grommet'
 class WoonSignUp extends Component{
     render(){
         return(
-            <Box width="medium">
+            <Box width="large">
             <Form
               onReset={event => console.log(event)}
               onSubmit={({ value }) => console.log("Submit", value)}
             >
+              <Heading level={2} margin="none">
+                          회원가입
+              </Heading>
               <FormField label="Email" name="userEmail" type="email" required />
               <FormField
                 label="Password"
@@ -28,12 +31,8 @@ class WoonSignUp extends Component{
                 name="photo"
                 type="file"
                 required
-                validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
               />
-              <Box direction="row" justify="between" margin={{ top: "medium" }}>
-                <Button type="submit" label="Update" primary />
-                <Button type="reset" label="Reset" />
-              </Box>
+                <Button type="submit" label="SignUp" primary />
             </Form>
           </Box>
         )
