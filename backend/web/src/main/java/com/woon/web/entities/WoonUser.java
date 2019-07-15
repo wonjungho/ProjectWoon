@@ -1,7 +1,9 @@
 package com.woon.web.entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,16 +29,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "woon_users"/*, uniqueConstraints = { @UniqueConstraint(columnNames = "userEmail") }*/)
+@Table(name = "woon_users")
 public class WoonUser {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    // @OneToMany
     private Long uno;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email", nullable = false, unique = true)
     private String userEmail;
     @Column(name = "user_name", nullable = false)
     private String userName;
@@ -50,5 +51,8 @@ public class WoonUser {
     @CreationTimestamp
     @Column(name = "signup_date", nullable = false)
     private Timestamp signupDate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "woonUsers")
+    private List<WoonJoinGroup> woonJoingroups;
 
 }

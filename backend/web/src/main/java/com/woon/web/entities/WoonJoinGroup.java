@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "joingroups")
 public class WoonJoinGroup implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,5 +38,9 @@ public class WoonJoinGroup implements Serializable {
     @ManyToOne
     @JoinColumn(name="groupno")
     private WoonGroup WoonGroups;
+
+    @ManyToOne
+    @JoinColumn(name="uno")
+    private WoonUser woonUsers;
 
 }
