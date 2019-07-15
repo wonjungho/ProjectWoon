@@ -27,13 +27,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "woon_users", uniqueConstraints = { @UniqueConstraint(columnNames = "userEmail") })
+@Table(name = "woon_users"/*, uniqueConstraints = { @UniqueConstraint(columnNames = "userEmail") }*/)
 public class WoonUser {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @OneToMany
+    // @OneToMany
     private Long uno;
 
     @Column(name = "user_email", nullable = false)

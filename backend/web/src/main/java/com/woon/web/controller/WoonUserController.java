@@ -7,6 +7,7 @@ import com.woon.web.repositories.WoonUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 public class WoonUserController {
 
     @Autowired
@@ -37,10 +39,12 @@ public class WoonUserController {
     // 회원가입
     @PostMapping("/signup")
     public void signup(@RequestBody WoonUserDTO dto) {
+        System.out.println("====회원가입====");
         WoonUser entity = new WoonUser();
         entity.setUserEmail(dto.getUserEmail());
         entity.setPassword(dto.getPassword());
         entity.setUserName(dto.getUserName());
+        // entity.setProfile(dto.getpro);
 
         repo.save(entity);
     }
@@ -48,7 +52,7 @@ public class WoonUserController {
     // 로그인
     @PostMapping("/login")
     public WoonUserDTO login(@RequestBody WoonUserDTO dto) {
-        return modelMapper.map(repo.findUserByEmailIdAndPassword(dto.getUserEmail(), dto.getPassword()),
+        return modelMapper.map(repo.findUserByUserEmailAndPassword(dto.getUserEmail(), dto.getPassword()),
                 WoonUserDTO.class);
     }
 
@@ -56,7 +60,7 @@ public class WoonUserController {
     @PutMapping("/modi")
     public void modiPass(@RequestBody WoonUserDTO dto) {
         WoonUser entity = new WoonUser();
-        entity = repo.findUserByEmailId(dto.getUserEmail());
+        entity = repo.findUserByUserEmail(dto.getUserEmail());
         entity.setPassword(dto.getPassword());
 
         repo.save(entity);
@@ -66,7 +70,7 @@ public class WoonUserController {
     @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable String id) {
         WoonUser entity = new WoonUser();
-        entity = repo.findUserByEmailId(id);
+        entity = repo.findUserByUserEmail(id);
 
         repo.deleteById(entity.getUno());
     }

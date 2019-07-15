@@ -1,42 +1,80 @@
-import React,{Component} from 'react'
-import {Box,Form,FormField,Button,Heading} from 'grommet'
-class WoonSignUp extends Component{
-    render(){
-        return(
-            <Box width="large">
-            <Form
-              onReset={event => console.log(event)}
-              onSubmit={({ value }) => console.log("Submit", value)}
-            >
-              <Heading level={2} margin="none">
-                          회원가입
-              </Heading>
-              <FormField label="Email" name="userEmail" type="email" required />
-              <FormField
-                label="Password"
-                name="password"
-                type="text"
-                required
-                validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
-              />
-               <FormField
-                label="Name"
-                name="userName"
-                type="text"
-                required
-                validate={{ regexp: /^[0-9]{4,6}$/, message: "4-6 digits" }}
-              />
-              <FormField
-                label="Photo"
-                name="photo"
-                type="file"
-                required
-              />
-                <Button type="submit" label="SignUp" primary />
-            </Form>
-          </Box>
-        )
+import React, { Component } from 'react'
+import { Box, Form, FormField, Button, Heading } from 'grommet'
+import axios from 'axios'
+
+class WoonSignUp extends Component {
+  state = {
+    userEmail: '',
+    password: '',
+    userName: '',
+    profile: ''
+  }
+  // constructor (props) {
+  //   super(props)
+  // }
+  render () {
+    return (
+      <div>
+        <Box width='large'>
+          <Form >
+            <Heading level={2} margin='none'>
+              회원가입
+            </Heading>
+            <FormField label='Email' name='userEmail' type='email' onChange={this.handleChange} required />
+            <FormField
+              label='Password'
+              name='password'
+              type='password'
+              required
+              onChange={this.handleChange}
+              // validate={{ regexp: /^[0-9]{4,6}$/, message: '4-6 digits' }}
+            />
+            <FormField
+              label='Name'
+              name='userName'
+              type='text'
+              required
+              onChange={this.handleChange}
+              // validate={{ regexp: /^[0-9]{4,6}$/, message: '4-6 digits' }}
+            />
+            <FormField label='Photo' name='profile' type='file' onChange={this.handleChange} />
+            <Button type='submit' label='SignUp' primary onClick={this.signup}/>
+          </Form>
+        </Box>
+      </div>
+    )
+  }
+  signup = e => {
+    e.preventDefault()
+
+    const data = {
+      userEmail: this.state.userEmail,
+      password: this.state.password,
+      userName: this.state.userName,
+      profile: this.state.profile
     }
+    const headers = {
+      'Content-Type': 'application/json'
+
+    }
+    axios
+      .post(`http://localhost:8080/users/signup`, data, {
+        headers: headers
+      })
+      .then(res => {
+        alert('가입되었습니다.')
+      })
+      .catch(e => {
+        alert('회원가입실패')
+      })
+  }
+  handleChange=(e)=>{
+    const target =e.target
+    const name= target.name
+    this.setState({
+      [name]:target.value
+    })
+  }
 }
 
 export default WoonSignUp
