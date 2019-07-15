@@ -1,13 +1,18 @@
 import React,{Component} from 'react'
 import {Box,Anchor,Text, TextArea,Layer,Heading,Button,FormField,TextInput} from 'grommet'
 import {AddCircle,Close} from 'grommet-icons'
+import axios from 'axios';
 
 class WoonGroupList extends Component{
-    state={open:false}
+    state={open:false,
+      groupName:'',
+      groupInfo:''
+    }
     constructor(props){
       super(props)
       this.onOpen=this.onOpen.bind(this)
       this.onClose=this.onClose.bind(this)
+      
     }
     onOpen=()=>this.setState({open:true})
     onClose=()=>this.setState({open:false})
@@ -48,7 +53,7 @@ class WoonGroupList extends Component{
                   </Box>
                   <Box flex="grow" overflow="auto" pad={{ vertical: "medium" }}>
                   <FormField label="GroupName">
-                  <TextInput/>
+                  <TextInput name="groupName" value={this.state.groupName} onChange={this.handleChange}/>
                   </FormField>
                   <FormField label="GroupInfo">
                   <Box
@@ -58,6 +63,9 @@ class WoonGroupList extends Component{
                   >
                   <TextArea
                    size="xlarge"
+                   name="groupInfo"
+                   value={this.state.groupInfo}
+                   onChange={this.handleChange}
                    fill
                   />
                   </Box>
@@ -67,7 +75,7 @@ class WoonGroupList extends Component{
                   <Button
                   type="submit"
                   label="생성"
-                  onClick={this.onClose}
+                  onClick={this.createGroup}
                   primary
                   />
                   </Box>
@@ -77,6 +85,31 @@ class WoonGroupList extends Component{
               </Box>    
             </Box>
         )
+    }
+    createGroup =(e)=>{
+      e.preventDefault();
+      let data ={
+        groupName:this.state.groupName,
+        groupInfo:this.state.groupInfo
+      }
+      let header={
+        'Content-Type':'application/json',
+        'Authorization':'JWT fefege..'
+      }
+      axios.post(`http://localhost:9000/groups`,data,{headers:header})
+      .then(res=>{
+
+      })
+      .catch(e=>{
+        alert('실패');
+      })
+    }
+    handleChange=(e)=>{
+      const target =e.target
+      const name= target.name
+      this.setState({
+        [name]:target.value
+      })
     }
 }
 export default WoonGroupList
