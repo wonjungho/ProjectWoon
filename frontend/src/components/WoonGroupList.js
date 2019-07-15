@@ -10,9 +10,8 @@ class WoonGroupList extends Component{
     }
     constructor(props){
       super(props)
-      this.onOpen=this.onOpen.bind(this)
+      this.onOpen=this.onOpen.bind(this)    
       this.onClose=this.onClose.bind(this)
-      
     }
     onOpen=()=>this.setState({open:true})
     onClose=()=>this.setState({open:false})
@@ -98,7 +97,7 @@ class WoonGroupList extends Component{
       }
       axios.post(`http://localhost:9000/groups`,data,{headers:header})
       .then(res=>{
-
+        alert(res.data.result);
       })
       .catch(e=>{
         alert('실패');
