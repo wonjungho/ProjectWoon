@@ -1,5 +1,6 @@
 package com.woon.web.controller;
 
+import com.woon.web.common.CommonConfig;
 import com.woon.web.domain.WoonUserDTO;
 import com.woon.web.entities.WoonUser;
 import com.woon.web.repositories.WoonUserRepository;
@@ -26,15 +27,10 @@ public class WoonUserController {
 
     @Autowired
     WoonUserDTO user;
-    @Autowired
-    ModelMapper modelMapper;
+    @Autowired CommonConfig config;
     @Autowired
     WoonUserRepository repo;
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
     // 회원가입
     @PostMapping("/signup")
@@ -52,7 +48,7 @@ public class WoonUserController {
     // 로그인
     @PostMapping("/login")
     public WoonUserDTO login(@RequestBody WoonUserDTO dto) {
-        return modelMapper.map(repo.findUserByUserEmailAndPassword(dto.getUserEmail(), dto.getPassword()),
+        return config.modelMapper().map(repo.findUserByUserEmailAndPassword(dto.getUserEmail(), dto.getPassword()),
                 WoonUserDTO.class);
     }
 

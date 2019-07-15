@@ -2,6 +2,7 @@ package com.woon.web.controller;
 
 import java.util.HashMap;
 
+import com.woon.web.common.CommonConfig;
 import com.woon.web.domain.WoonGroupDTO;
 import com.woon.web.entities.WoonGroup;
 import com.woon.web.entities.WoonJoinGroup;
@@ -26,11 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WoonGroupController {
     @Autowired WoonGroupRepository repo;
     @Autowired WoonGroupDTO groupDTO;
-
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
+    @Autowired CommonConfig modelMapper;
     //그룹의 개수
     @GetMapping("/count")
     public Long count() {
