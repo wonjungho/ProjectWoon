@@ -25,15 +25,15 @@ import lombok.Setter;
 @Setter
 @Table(name = "joingroups")
 public class WoonJoinGroup implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long jgrno;
-     
+    
     @Column(name = "group_leader", nullable = false
             , columnDefinition = "varchar(255) default '0'")
-    private String groupLeader;  
+    private String groupLeader;
 
     @ManyToOne
     @JoinColumn(name="groupno")

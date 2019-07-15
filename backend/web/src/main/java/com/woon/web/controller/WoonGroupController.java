@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * WoonGroupController
  */
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @RequestMapping("/groups")
 public class WoonGroupController {
@@ -53,7 +53,7 @@ public class WoonGroupController {
         repo.save(wgEntity);
         //WoonGroupJoin을 생성한다.
         //전제 조건 : 해당woonGroup pk값이 필요, 해당 User의 pk 값 필요
-        WoonJoinGroup wjgEntity = new WoonJoinGroup();
+//       WoonJoinGroup wjgEntity = new WoonJoinGroup();
         
         
         map.put("result", "SUCCESS");
