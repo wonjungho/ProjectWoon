@@ -16,7 +16,7 @@ class WoonSignUp extends Component {
     return (
       <div>
         <Box width='large'>
-          <Form >
+          <Form>
             <Heading level={2} margin='none'>
               회원가입
             </Heading>
@@ -55,14 +55,14 @@ class WoonSignUp extends Component {
     }
     const headers = {
       'Content-Type': 'application/json'
-
     }
     axios
-      .post(`http://localhost:8080/users/signup`, data, {
+      .post(`http://localhost:9000/users/signup`, data, {
         headers: headers
       })
       .then(res => {
         alert('가입되었습니다.')
+        this.props.history.push("/");
       })
       .catch(e => {
         alert('회원가입실패')
