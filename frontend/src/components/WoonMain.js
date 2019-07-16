@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {Box} from 'grommet'
-import WoonChat from './WoonChat'
+import WoonChat from './Chat/WoonChat'
 import WoonSignUp from './WoonSignUp'
 import {GoToRoomInput} from '../components/GoToRoomInput'
 import Video from '../components/Video'
