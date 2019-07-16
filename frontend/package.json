@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@pusher/chatkit-client": "^1.9.1",
+    "@pusher/chatkit-server": "^2.0.1",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "connected-react-router": "^6.5.0",
@@ -26,7 +28,8 @@
     "shortid": "^2.2.14",
     "simple-peer": "^9.4.0",
     "socketio": "^1.0.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "webrtc": "^1.14.1"
   },
   "scripts": {
     "start": "react-scripts start",
