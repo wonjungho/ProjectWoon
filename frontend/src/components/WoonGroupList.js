@@ -5,6 +5,7 @@ import axios from 'axios';
 
 class WoonGroupList extends Component{
     state={open:false,
+      uno:'1',//하드코딩 테스트용
       groupName:'',
       groupInfo:''
     }
@@ -90,14 +91,21 @@ class WoonGroupList extends Component{
       let data ={
         groupName:this.state.groupName,
         groupInfo:this.state.groupInfo
+        
       }
       let header={
         'Content-Type':'application/json',
         'Authorization':'JWT fefege..'
       }
-      axios.post(`http://localhost:9000/groups`,data,{headers:header})
+      alert('uno: ' + this.state.uno)
+      axios.post(`http://localhost:9000/groups/`+ this.state.uno ,data,{headers:header})
       .then(res=>{
         alert(res.data.result);
+        this.setState({
+          open:false,
+          groupName: '',
+          groupInfo: ''
+        })
       })
       .catch(e=>{
         alert('실패');
