@@ -6,10 +6,10 @@ class WoonMessageList extends Component {
         return (
             <Box flex overflow="auto" pad="xsmall" id="messages">
                 {this.props.messages.map((message, index) => (
-                    <Box key={index} direction="row">
+                    <div key={index}>
                         <h4 className="message-sender">{message.senderId}</h4>
                         <div className="message-text">{message.text}</div>
-                    </Box>
+                    </div>
                 ))}
             </Box>
         )

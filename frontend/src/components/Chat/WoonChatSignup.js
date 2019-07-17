@@ -4,7 +4,7 @@ import {Box,Heading,Button,FormField,TextInput} from 'grommet'
 class WoonChatSignup extends Component{
     constructor(props){
         super(props);
-        this.state ={
+        this.state ={  
             username:""
         }
         this.handleChange = this.handleChange.bind(this)
