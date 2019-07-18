@@ -2,10 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/css/index.css';
 import App from './containers/App';
-import * as serviceWorker from './serviceWorker';
-// import {createStore,combineReducers,applyMiddleware} from 'redux'
-// import logger from 'redux-logger'
-// import * as reducers from './reducers'
+import * as serviceWorker from './serviceWorker'
 import {Provider} from 'react-redux'
 import {ConnectedRouter} from 'connected-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'

@@ -5,7 +5,6 @@ import axios from 'axios'
 
 class WoonLogin extends Component {
   state = {
-    sidebar: true,
     open: false,
     select: '',
     userEmail: '',

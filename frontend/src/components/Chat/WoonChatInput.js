@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Button,TextInput,Form,Box} from 'grommet'
+import {Button,TextInput,Box} from 'grommet'
 import {Add} from 'grommet-icons'
 class WoonChatInput extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class WoonChatInput extends Component {
           >
                 <Button icon={<Add/>}/>
                 <TextInput className="message-input" type="text" onChange={this.handleChange} value={this.state.message}/>
-                <Button className="message-submit" type="submit" label="send" onClick={this.handleSubmit}/> 
+                <Button className="message-submit" type="button" label="send" onSubmit={this.handleSubmit}/> 
             </Box>
         )
     }

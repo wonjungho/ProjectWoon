@@ -1,5 +1,5 @@
 import React from 'react'
-import VideoCall from '../helpers/simple-peer'
+import VideoCall from '../../helpers/simple-peer'
 // import '../styles/video.css'
 import io from 'socket.io-client'
 

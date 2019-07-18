@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
 import {Box} from 'grommet'
 import WoonChat from './Chat/WoonChat'
-import WoonSignUp from './WoonSignUp'
-import {GoToRoomInput} from '../components/GoToRoomInput'
-import Video from '../components/Video'
+import WoonSignUp from './User/WoonSignUp'
+import {GoToRoomInput} from './Video/GoToRoomInput'
+import Video from './Video/Video'
 import { BrowserRouter, Route } from 'react-router-dom';
 
 class WoonMain extends Component{

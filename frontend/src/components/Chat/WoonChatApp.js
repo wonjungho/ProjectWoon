@@ -27,7 +27,7 @@ class WoonChatMessages extends Component{
                 .then(currentUser => {
                     this.setState({ currentUser: currentUser })
                     return currentUser.subscribeToRoom({
-                        roomId: "21652545",
+                        roomId: "21669625",
                         messageLimit: 100,
                         hooks: {
                             onMessage: message => {

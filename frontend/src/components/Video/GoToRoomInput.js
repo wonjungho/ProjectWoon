@@ -12,8 +12,8 @@ export function GoToRoomInput({history}) {
 
   return (<div className="enter-room-container">
     <form>
-          <input type="text" value={roomId} placeholder="Room id" onChange={(event) => {
-            setRoomId(event.target.value)
+          <input type="text" value={roomId} placeholder="Room id" onChange={(e) => {
+            setRoomId(e.target.value)
           }}/>
           <button onClick={() => {
             goToRoom(history, roomId)
