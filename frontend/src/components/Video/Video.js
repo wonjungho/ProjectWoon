@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
-import {SimpleWebRTC} from 'webrtc'
-import ReactDOM from 'react-dom'
+import "webrtc-adapter";
 class Video extends Component{
     state = {
         startDisabled: false,
@@ -32,7 +31,13 @@ class Video extends Component{
             localStream:stream
         })
     }
- 
+    gotRemoteStream = event => {
+        let remoteVideo = this.remoteVideoRef.current;
+
+        if (remoteVideo.srcObject !== event.streams[0]) {
+            remoteVideo.srcObject = event.streams[0];
+        }
+    };
     call = () => {
         this.setState({
             callDisabled:true,
@@ -46,7 +51,7 @@ class Video extends Component{
         pc1.onicegatheringstatechange = e =>this.onIceStateChange(pc1,e)
 
         pc1.onicecandidate = e => this.onIceCandidate(pc2,e)
-        pc2.onicegatheringstatechange = e=>this.onIceStateChange(pc2.e)
+        pc2.onicegatheringstatechange = e=>this.onIceStateChange(pc2,e)
         pc2.ontrack = this.gotRemoteStream;
 
         localStream.getTracks().forEach(track => pc1.addTrack(track, localStream))
@@ -65,6 +70,7 @@ class Video extends Component{
         localStream
     })
     };
+
     onCreateOfferSuccess = desc =>{
         let {pc1,pc2} = this.state;
 
@@ -100,7 +106,6 @@ class Video extends Component{
 
     onCreateAnswerSuccess = desc =>{
         let{pc1,pc2} = this.state
-
         pc1
             .setRemoteDescription(desc)
             .then(
@@ -142,6 +147,9 @@ class Video extends Component{
                         error.toString()
                 )
             )
+    }
+    onIceStateChange =(pc,event) =>{
+        console.log("ICE State:"+pc.iceConnectState);
     }
  
     hangUp = () => {
