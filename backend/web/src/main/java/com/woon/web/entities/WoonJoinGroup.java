@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +35,8 @@ public class WoonJoinGroup implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long jgrno;
     
-    @Column(name = "group_leader", nullable = false
-            , columnDefinition = "varchar(255) default '0'")
+    @Column(name = "group_leader")
+    @ColumnDefault("0")
     private String groupLeader;
 
     @ManyToOne

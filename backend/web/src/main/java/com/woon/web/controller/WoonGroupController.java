@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -107,21 +108,34 @@ public class WoonGroupController {
         return list;
     }
     //그룹 삭제 (전제: 그룹리더인 경우)
-    //tbl_groups 의 해당 그룹 record를 삭제하면 cascade 처리 결과 
-    //tbl_joingroups 의 해당 레코드들도 동시에 삭제됨.
+    //  tbl_groups 의 해당 그룹 record를 삭제하면 cascade 처리 결과 
+    //  tbl_joingroups 의 해당 레코드들도 동시에 삭제됨.
     @DeleteMapping("/{groupno}")
-    public void deleteByid(@PathVariable Long groupno){
-        System.out.println("deleteByid 입장. groupno: "+ groupno);
+    public void deleteById(@PathVariable Long groupno){
+        System.out.println("deleteById 입장. groupno: "+ groupno);
         groupRepo.deleteById(groupno);
+        
     }
 
     //그룹 탈퇴 (전제: 그룹리더(X) and 그룹원인 경우)
     //  방장이 아닐 때(tbl_joingroups. group_leader 값이 0)
-    //joingroups 테이블에서 delete
-    //uno(유저pk) 와 현재 해당 groupno로 해당 record 접근 가능
+    //  joingroups 테이블에서 delete
+    //  uno(유저pk) 와 현재 해당 groupno로 해당 record 접근 가능
     @DeleteMapping("/{uno}/{groupno}")
-    public void deleteById(@PathVariable String uno, @PathVariable String groupno){
+    public void deleteByUnoAndGroupno(@PathVariable String uno, @PathVariable String groupno){
+        System.out.println("deleteByUnoAndGroupno");
         joinGroupRepo.deleteByUnoAndGroupno(uno,groupno);
-    } 
-
+    }
+    //그룹 수정 (그룹 리더인 경우)
+    @PutMapping("/{groupno}/{groupInfo}")
+    public HashMap<String, String> update(@PathVariable String groupno, @PathVariable String groupInfo){
+        System.out.println("update 입장. groupno: "+ groupno 
+                            +", groupInfo: "+groupInfo);
+        HashMap<String, String> map = new HashMap<>();
+        WoonGroup entity = groupRepo.findById(Long.parseLong(groupno)).get();
+        entity.setGroupInfo(groupInfo);
+        groupRepo.save(entity);
+        map.put("result", "SUCCESS");
+        return map;
+    }  
 }
