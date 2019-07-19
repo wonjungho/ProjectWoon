@@ -28,7 +28,7 @@ class WoonHeader extends Component{
               >
                 <Button>
                   <Text size="large" className="test">Woon</Text>
-                </Button>
+                </Button> 
                 <Button className="test primary" onClick={this.onOpen}>로그인</Button>
                 {open&&(
                   <WoonLogin onClick={this.LoginClose}/>
