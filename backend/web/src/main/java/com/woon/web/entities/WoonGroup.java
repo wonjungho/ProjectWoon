@@ -27,7 +27,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "groups")
+@Table(name = "tbl_groups")
 public class WoonGroup implements Serializable {
     
     private static final long serialVersionUID = 1L;

@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * WoonJoinGroup
@@ -23,7 +24,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "joingroups")
+@ToString
+@Table(name = "tbl_joingroups")
 public class WoonJoinGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
