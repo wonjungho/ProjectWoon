@@ -80,7 +80,6 @@ class WoonLogin extends Component {
       userEmail: this.state.userEmail,
       password: this.state.password
     }
-    console.log(data)
     const headers = {
       'Content-Type': 'application/json'
     }
@@ -88,11 +87,14 @@ class WoonLogin extends Component {
       .post(`http://localhost:9000/users/login`, JSON.stringify(data), { headers: headers })
       .then(res => {
         alert('로그인되었습니다.')
+        console.dir(res.data)
+        localStorage.clear()
+        sessionStorage.setItem('loginId',res.data.userEmail) 
         this.onClose()
         // this.props.history.push('/chat')
       })
       .catch(e => {
-        alert('회원가입실패')
+        alert('로그인실패')
       })
   }
   /* handleChange = e => {
