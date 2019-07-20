@@ -59,15 +59,16 @@ public class WoonGroupController {
      * @param dto WoonGroupDTO
      * @return HashMap
      */
-    @PostMapping("/{id}")
-    public HashMap<String, String> save(@PathVariable String id, @RequestBody WoonGroupDTO dto) {
+    @PostMapping("/{uno}")
+    public HashMap<String, String> save(@PathVariable String uno, @RequestBody WoonGroupDTO dto) {
         System.out.println("Post save(dto) 입장");
         // user id 정상적으롤 받았는지 확인
-        System.out.println("USER ID: " + id);
+        System.out.println("USER ID: " + uno);
 
         System.out.println("GROUP NAME: " + dto.getGroupName());
         System.out.println("GROUP LEADER: " + dto.getGroupInfo());
         HashMap<String, String> map = new HashMap<>();
+        
         // woonGroup 생성 (먼저 생성)
         WoonGroup wgEntity = new WoonGroup();
         wgEntity.setGroupName(dto.getGroupName());
@@ -82,7 +83,7 @@ public class WoonGroupController {
         //그룹에 가입하는 user entity
         WoonUser userEntity = new WoonUser();
         // 해당 식별키에 해당하는 단일 엔티티 반환
-        userEntity = userRepo.findById(Long.parseLong(id)).get();
+        userEntity = userRepo.findById(Long.parseLong(uno)).get();
         //woonjoingroup엔터티에 woonuser의 pk값 집어넣기.
         wjgEntity.setWoonUsers(userEntity);
         //그룹 생성하는 유저가 그룹 리더 -> groupleader 값 1을 가진다.
@@ -94,11 +95,39 @@ public class WoonGroupController {
         map.put("result", "SUCCESS");
         return map;
     }
+    //그룹 가입
+    @PostMapping("/{uno}/{groupno}")
+    public HashMap<String, String> joinGroup(@PathVariable String uno, @PathVariable String groupno) {
+        System.out.println("insertGroup 입장");
+        // group no 정상적으롤 받았는지 확인
+        System.out.println("User no: " + uno);
+        System.out.println("Group no: " + groupno);
+        HashMap<String, String> map = new HashMap<>();
+        
+        // 해당 woonGroup 가져오기
+        WoonGroup wgEntity = groupRepo.findById(Long.parseLong(groupno)).get();
+        
+        // woonJoinGroup 생성
+        WoonJoinGroup wjgEntity = new WoonJoinGroup();
+        // woonJoingroup 엔터티에 woongroup data 입력
+        wjgEntity.setWoonGroups(wgEntity);
+        
+        wjgEntity.setGroupLeader("0");
+        // uno 로 user 엔터티 가져오기.
+        WoonUser userEntity = userRepo.findById(Long.parseLong(uno)).get();
+        //woonjoingroup엔터티에 woonuser의 pk값 집어넣기.
+        wjgEntity.setWoonUsers(userEntity);
+        //수정내용 적용
+        joinGroupRepo.save(wjgEntity);
+        System.out.println("엔티티로 바뀐 정보: "+ wjgEntity.toString());
+        map.put("result", "SUCCESS");
+        return map;
+    }
     //가입한 그룹 목록 조회
-    @GetMapping("/{id}")
-    public List<WoonGroupDTO> findAllGroups(@PathVariable String id){
+    @GetMapping("/list/{uno}")
+    public List<WoonGroupDTO> findAllGroups(@PathVariable String uno){
         System.out.println("findAllGroups 입장");
-        Iterable<WoonGroup> entities = groupRepo.findAllByGroups(id);
+        Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
         List<WoonGroupDTO> list = new ArrayList<>();
         for(WoonGroup g : entities){
             WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
@@ -107,10 +136,12 @@ public class WoonGroupController {
         System.out.println(list);
         return list;
     }
+    //그룹원 목록 조회
+    
     //그룹 삭제 (전제: 그룹리더인 경우)
     //  tbl_groups 의 해당 그룹 record를 삭제하면 cascade 처리 결과 
     //  tbl_joingroups 의 해당 레코드들도 동시에 삭제됨.
-    @DeleteMapping("/{groupno}")
+    @DeleteMapping("/delete/{groupno}")
     public void deleteById(@PathVariable Long groupno){
         System.out.println("deleteById 입장. groupno: "+ groupno);
         groupRepo.deleteById(groupno);
@@ -121,20 +152,21 @@ public class WoonGroupController {
     //  방장이 아닐 때(tbl_joingroups. group_leader 값이 0)
     //  joingroups 테이블에서 delete
     //  uno(유저pk) 와 현재 해당 groupno로 해당 record 접근 가능
-    @DeleteMapping("/{uno}/{groupno}")
-    public void deleteByUnoAndGroupno(@PathVariable String uno, @PathVariable String groupno){
-        System.out.println("deleteByUnoAndGroupno");
+    @DeleteMapping("/delete/{uno}/{groupno}")
+    public void deleteByUnoAndGroupno(@PathVariable Long uno, @PathVariable Long groupno){
+        System.out.println("deleteByUnoAndGroupno 입장, uno: "+uno+", groupno: "+groupno);
         joinGroupRepo.deleteByUnoAndGroupno(uno,groupno);
     }
     //그룹 수정 (그룹 리더인 경우)
-    @PutMapping("/{groupno}/{groupInfo}")
-    public HashMap<String, String> update(@PathVariable String groupno, @PathVariable String groupInfo){
-        System.out.println("update 입장. groupno: "+ groupno 
-                            +", groupInfo: "+groupInfo);
+    @PutMapping("/modi")
+    //public HashMap<String, String> update(@RequestBody WoongroupDTO @PathVariable String groupno, @PathVariable String groupInfo){
+    public HashMap<String, String> update(@RequestBody WoonGroupDTO dto){    
+        System.out.println("update 입장. groupno: "+ dto.getGroupno() 
+                            +", groupInfo: "+dto.getGroupInfo());
         HashMap<String, String> map = new HashMap<>();
-        WoonGroup entity = groupRepo.findById(Long.parseLong(groupno)).get();
-        entity.setGroupInfo(groupInfo);
-        groupRepo.save(entity);
+        WoonGroup wgEntity = groupRepo.findById(dto.getGroupno()).get();
+        wgEntity.setGroupInfo(dto.getGroupInfo());
+        groupRepo.save(wgEntity);
         map.put("result", "SUCCESS");
         return map;
     }  

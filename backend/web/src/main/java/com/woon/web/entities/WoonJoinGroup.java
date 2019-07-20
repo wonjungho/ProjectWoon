@@ -36,7 +36,6 @@ public class WoonJoinGroup implements Serializable {
     private Long jgrno;
     
     @Column(name = "group_leader")
-    @ColumnDefault("0")
     private String groupLeader;
 
     @ManyToOne
