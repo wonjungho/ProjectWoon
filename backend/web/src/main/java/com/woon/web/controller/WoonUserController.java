@@ -5,9 +5,7 @@ import com.woon.web.domain.WoonUserDTO;
 import com.woon.web.entities.WoonUser;
 import com.woon.web.repositories.WoonUserRepository;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +33,6 @@ public class WoonUserController {
     // 회원가입
     @PostMapping("/signup")
     public void signup(@RequestBody WoonUserDTO dto) {
-        System.out.println("====회원가입====");
         WoonUser entity = new WoonUser();
         entity.setUserEmail(dto.getUserEmail());
         entity.setPassword(dto.getPassword());

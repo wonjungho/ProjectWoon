@@ -87,23 +87,15 @@ class WoonLogin extends Component {
       .post(`http://localhost:9000/users/login`, JSON.stringify(data), { headers: headers })
       .then(res => {
         alert('로그인되었습니다.')
-        console.dir(res.data)
-        localStorage.clear()
-        sessionStorage.setItem('loginId',res.data.userEmail) 
+        sessionStorage.setItem('loginId',res.data.userEmail)
+        sessionStorage.setItem('loginName',res.data.userName)
         this.onClose()
-        // this.props.history.push('/chat')
       })
       .catch(e => {
         alert('로그인실패')
       })
   }
-  /* handleChange = e => {
-    const target = e.target
-    const name = target.name
-    this.setState({
-      [name]: target.value
-    })
-  } */
+
   handleChange = e => {
     const { name, value } = e.target
     this.setState({ [name]: value })

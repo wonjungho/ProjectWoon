@@ -29,6 +29,8 @@
     "simple-peer": "^9.4.0",
     "socketio": "^1.0.0",
     "styled-components": "^4.3.2",
+    "sweetalert-react": "^0.4.11",
+    "sweetalert2": "^8.14.0",
     "webrtc": "^1.14.1"
   },
   "scripts": {

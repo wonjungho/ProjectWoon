@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { Box, Button, Text } from 'grommet'
+import { Box, Button, Text,Anchor,DropButton } from 'grommet'
 import WoonLogin from './User/WoonLogin'
+import defaultProfile from '../assets/images/default-profile-icon.jpg'
 class WoonHeader extends Component {
   state = { open: false, reload: false }
   constructor (props) {
     super(props)
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
+    this.mypage = this.mypage.bind(this)
   }
   onOpen = () => this.setState({ open: true })
   onClose = () => this.setState({ open: false })
@@ -16,9 +18,16 @@ class WoonHeader extends Component {
     })
   }
 
+  renderItems = () => (
+    <Box>
+      <Anchor href='/mypage'>마이페이지</Anchor>
+      <Anchor onClick={this.logout}>로그아웃</Anchor>
+    </Box>
+  );
+
   render () {
     const temp = sessionStorage.getItem('loginId')
-    console.log(temp)
+
     const { open } = this.state
 
     let loginArea =
@@ -27,9 +36,21 @@ class WoonHeader extends Component {
           로그인
         </Button>
       ) : (
-        <Button className='test primary' onClick={this.logout}>
-          로그아웃
-        </Button>
+        // (<Button className='test primary' onClick={this.logout}>로그아웃</Button>)
+        <DropButton
+              alignSelf="center"
+              margin={{ vertical: "small" }}
+              dropContent={this.renderItems()}
+              dropProps={{ align: { top: "bottom" } }}
+            >
+              <Box
+                height="36px"
+                width="36px"
+                round="full"
+                background="url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)"
+                // texture="url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)"
+              />
+            </DropButton>
       )
     return (
       <Box
@@ -53,15 +74,20 @@ class WoonHeader extends Component {
       </Box>
     )
   }
+
   check = () => {
     alert('check')
-    this.setState({ reload: true })
+    this.setState({ reload: !this.state.reload })
   }
   logout = () => {
     alert('로그아웃 완료')
     sessionStorage.clear()
     this.check()
     // this.props.history.push("/")
+  }
+  mypage = (e) => {
+    e.preventDefault()
+    window.location = 'mypage';
   }
 }
 
