@@ -138,7 +138,7 @@ class Video extends Component{
         let otherPc = pc ===pc1 ? pc2 : pc1;
 
         otherPc
-            .addIceCandidate(event.candidate)
+            .window.addIceCandidate(event.candidate)
             .then(
                 () => console.log("addIceCandidate success"),
                 error =>
@@ -148,6 +148,7 @@ class Video extends Component{
                 )
             )
     }
+    
     onIceStateChange =(pc,event) =>{
         console.log("ICE State:"+pc.iceConnectState);
     }
