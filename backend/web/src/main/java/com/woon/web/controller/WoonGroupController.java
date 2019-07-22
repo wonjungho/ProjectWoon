@@ -7,6 +7,7 @@ import java.util.List;
 
 
 import com.woon.web.common.CommonConfig;
+import com.woon.web.common.GmailService;
 import com.woon.web.domain.WoonGroupDTO;
 import com.woon.web.entities.WoonGroup;
 import com.woon.web.entities.WoonJoinGroup;
@@ -45,6 +46,8 @@ public class WoonGroupController {
     WoonGroupDTO groupDTO;
     @Autowired
     CommonConfig config;
+    @Autowired
+    GmailService mail;
 
     // 그룹의 개수
     @GetMapping("/count")
@@ -131,6 +134,7 @@ public class WoonGroupController {
         //1. 유저 이메일로 단일 유저 엔터티 구하기
         //2. 가져온 유저 엔터티에서 uno(pk)값 구하기
         WoonUser userEntity = userRepo.findUserByUserEmail(id);
+        
         Long uno =userEntity.getUno();
         Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
         List<WoonGroupDTO> list = new ArrayList<>();
@@ -179,5 +183,11 @@ public class WoonGroupController {
         return map;
     }
     //그룹원 초대 처리 필요
+   @GetMapping("/inviteUser/{email}")
+   public void UserInvite(@PathVariable String email){
+       System.out.println(email);
+       String content = "<h1>Hello! We are woon!</h1>";
+       mail.sendMail(email, "초대이메일입니다",content);
+   }
     
 }
