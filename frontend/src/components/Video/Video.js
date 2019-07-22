@@ -1,198 +1,232 @@
 import React,{Component} from 'react'
 import "webrtc-adapter";
+import faker from "faker";
+import SignalingConnection from "./SignalingConnection";
+import PeerConnection from "./PeerConnection";
 class Video extends Component{
     state = {
-        startDisabled: false,
+        startDisabled: true,
         callDisabled: true,
         hangUpDisabled: true,
-        servers: null,
-        pc1: null,
-        pc2: null,
-        localStream: null
+        localStream: null,
+        clientID: new Date().getTime() % 1000,
+        username: faker.internet.userName(),
+        userList: []
     };
- 
+
     localVideoRef = React.createRef();
     remoteVideoRef = React.createRef();
- 
-    start = () => {
-        this.setState({
-            startDisabled:true
-        })
-        navigator.mediaDevices.getUserMedia({
-            audio:true,
-            video:true
-        })
-        .then(this.gotStream).catch(e=>alert("getUsrMedia() error:"+ e.name))
+    peerConnection = null;
+    signalingConnection = null;
+
+    setUsername = () => {
+        const { username, clientID } = this.state;
+        this.signalingConnection.sendToServer({
+            name: username,
+            date: Date.now(),
+            id: clientID,
+            type: "username"
+        });
     };
-    gotStream = stream =>{
-        this.localVideoRef.current.srcObject =stream;
+
+    changeUsername = event =>
         this.setState({
-            callDisabled:false,
-            localStream:stream
-        })
+            username: event.target.value
+        });
+
+    componentDidMount() {
+        this.signalingConnection = new SignalingConnection({
+            // socketURL: "localhost:6503",
+            socketURL: "webrtc-sample-signaling.now.sh",
+            onOpen: () =>
+                this.setState({
+                    startDisabled: false
+                }),
+            onMessage: this.onSignalingMessage
+        });
     }
-    gotRemoteStream = event => {
+
+    onSignalingMessage = msg => {
+        switch (msg.type) {
+            case "id":
+                this.setState({
+                    clientID: msg.id
+                });
+                this.setUsername();
+                break;
+
+            case "rejectusername":
+                this.setState({
+                    username: msg.name
+                });
+                console.log(
+                    `Your username has been set to <${
+                        msg.name
+                    }> because the name you chose is in use`
+                );
+                break;
+
+            case "userlist": // Received an updated user list
+                this.setState({
+                    userList: msg.users
+                });
+                break;
+
+            // // Signaling messages: these messages are used to trade WebRTC
+            // // signaling information during negotiations leading up to a video
+            // // call.
+
+            case "video-offer": // Invitation and offer to chat
+                this.createPeerConnection();
+                this.peerConnection.videoOffer(msg);
+                break;
+        }
+    };
+
+    gotStream = stream => {
+        this.localVideoRef.current.srcObject = stream;
+        this.setState({
+            callDisabled: false,
+            localStream: stream
+        });
+    };
+    gotRemoteTrack = event => {
         let remoteVideo = this.remoteVideoRef.current;
 
         if (remoteVideo.srcObject !== event.streams[0]) {
             remoteVideo.srcObject = event.streams[0];
         }
-    };
-    call = () => {
+
         this.setState({
-            callDisabled:true,
-            hangUpDisabled:false
-        })
-        let {localStream} =this.state;
-        let servers =null,
-            pc1 =new RTCPeerConnection(servers),
-            pc2 = new RTCPeerConnection(servers)
-        pc1.onicecandidate = e => this.onIceCandidate(pc1,e)
-        pc1.onicegatheringstatechange = e =>this.onIceStateChange(pc1,e)
-
-        pc1.onicecandidate = e => this.onIceCandidate(pc2,e)
-        pc2.onicegatheringstatechange = e=>this.onIceStateChange(pc2,e)
-        pc2.ontrack = this.gotRemoteStream;
-
-        localStream.getTracks().forEach(track => pc1.addTrack(track, localStream))
-        pc1.createOffer({
-            offerToReceiveAudio:1,
-            offerToReceiveAudio:1
-        }).then(this.onCreateOfferSuccess,error =>
-            console.error(
-                error.toString()
-            )
-        )
-    this.setState({
-        servers,
-        pc1,
-        pc2,
-        localStream
-    })
+            hangUpDisabled: false
+        });
+    };
+    gotRemoteStream = event => {
+        this.remoteVideoRef.current.srcObject = event.stream;
+        this.setState({
+            hangUpDisabled: false
+        });
     };
 
-    onCreateOfferSuccess = desc =>{
-        let {pc1,pc2} = this.state;
+    initMedia = () => {
+        this.setState({
+            startDisabled: true
+        });
+        navigator.mediaDevices
+            .getUserMedia({
+                audio: true,
+                video: true
+            })
+            .then(this.gotStream)
+            .catch(e => alert("getUserMedia() error:" + e.name));
+    };
 
-        pc1.setLocalDescription(desc)
-        .then(
-            ()=>
-                console.log("pc1 setLocalDescription complete createOffer"),
-            error =>
-                console.error(
-                    error.toString()
-                )
-        )
+    call = user => {
+        this.setState({
+            targetUsername: user
+        });
+        this.createPeerConnection();
+    };
 
-        pc2.setRemoteDescription(desc).then(
-            () => {
-                console.log("pc2 setRemoteDescription complete createOffer");
-                pc2
-                    .createAnswer()
-                    .then(this.onCreateAnswerSuccess, error =>
-                        console.error(
-                            "pc2 Failed to set session description in createAnswer",
-                            error.toString()
-                        )
-                    );
-            },
-            error =>
-                console.error(
-                    "pc2 Failed to set session description in createOffer",
-                    error.toString()
-                )
-        )
-    }
-
-    onCreateAnswerSuccess = desc =>{
-        let{pc1,pc2} = this.state
-        pc1
-            .setRemoteDescription(desc)
-            .then(
-                () =>
-                    console.log(
-                        "pc1 setRemoteDescription complete createAnswer"
-                    ),
-                error =>
-                    console.error(
-                        "pc1 Failed to set session description in onCreateAnswer",
-                        error.toString()
-                    )
-            )
-        pc2
-            .setLocalDescription(desc)
-            .then(
-                () =>
-                    console.log(
-                        "pc2 setLocalDescription complete createAnswer"
-                    ),
-                error =>
-                    console.error(
-                        "pc2 Failed to set session description in onCreateAnswer",
-                        error.toString()
-                    )
-            )
-    }
-    onIceCandidate =(pc,event) =>{
-        let {pc1,pc2} = this.state;
-        let otherPc = pc ===pc1 ? pc2 : pc1;
-
-        otherPc
-            .window.addIceCandidate(event.candidate)
-            .then(
-                () => console.log("addIceCandidate success"),
-                error =>
-                    console.error(
-                        "failed to add ICE Candidate",
-                        error.toString()
-                )
-            )
-    }
-    
-    onIceStateChange =(pc,event) =>{
-        console.log("ICE State:"+pc.iceConnectState);
-    }
- 
     hangUp = () => {
-        let {pc1,pc2} =this.state;
-        pc1.close();
-        pc2.close();
+        this.signalingConnection.sendToServer({
+            name: this.state.username,
+            target: this.state.targetUsername,
+            type: "hang-up"
+        });
+        this.peerConnection.close();
+    };
+
+    createPeerConnection = () => {
+        if (this.peerConnection) return;
+
+        this.peerConnection = new PeerConnection({
+            gotRemoteStream: this.gotRemoteStream,
+            gotRemoteTrack: this.gotRemoteTrack,
+            signalingConnection: this.signalingConnection,
+            onClose: this.closeVideoCall,
+            localStream: this.state.localStream,
+            username: this.state.username,
+            targetUsername: this.state.targetUsername
+        });
+    };
+
+    closeVideoCall = () => {
+        this.remoteVideoRef.current.srcObject &&
+            this.remoteVideoRef.current.srcObject
+                .getTracks()
+                .forEach(track => track.stop());
+        this.remoteVideoRef.current.src = null;
 
         this.setState({
-            pc1:null,
-            pc2:null,
-            hangUpDisabled:true,
-            callDisabled:false
-        })
+            targetUsername: null,
+            callDisabled: false
+        });
     };
- 
+
     render() {
-        const { startDisabled, callDisabled, hangUpDisabled } = this.state;
- 
+        const {
+            startDisabled,
+            callDisabled,
+            hangUpDisabled,
+            username,
+            userList
+        } = this.state;
+
         return (
             <div>
+                <div>
+                    Username:{" "}
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={this.changeUsername}
+                    />
+                    <button onClick={this.setUsername}> Set Username </button>
+                </div>
                 <video
                     ref={this.localVideoRef}
                     autoPlay
                     muted
-                    style={{ width: "240px", height: "180px" }}
+                    style={{
+                        width: "240px",
+                        height: "180px"
+                    }}
                 />
                 <video
                     ref={this.remoteVideoRef}
                     autoPlay
-                    style={{ width: "240px", height: "180px" }}
+                    muted
+                    style={{
+                        width: "240px",
+                        height: "180px"
+                    }}
                 />
- 
                 <div>
-                    <button onClick={this.start} disabled={startDisabled}>
-                        Start
-                    </button>
-                    <button onClick={this.call} disabled={callDisabled}>
-                        Call
+                    <button onClick={this.initMedia} disabled={startDisabled}>
+                        Init Media
                     </button>
                     <button onClick={this.hangUp} disabled={hangUpDisabled}>
                         Hang Up
                     </button>
+                </div>
+                <div>
+                    <ul>
+                        {userList.map(user => (
+                            <li key={user}>
+                                {user}
+                                {"  "}
+                                {user !== username ? (
+                                    <button
+                                        onClick={() => this.call(user)}
+                                        disabled={callDisabled}
+                                    >
+                                        Call
+                                    </button>
+                                ) : null}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         );
