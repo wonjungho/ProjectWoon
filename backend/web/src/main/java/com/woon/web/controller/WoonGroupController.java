@@ -137,13 +137,25 @@ public class WoonGroupController {
         
         Long uno =userEntity.getUno();
         Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
-        List<WoonGroupDTO> list = new ArrayList<>();
+        HashMap<String, String> map = new HashMap<String, String>();
+        
+        List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
+        
+        //for (int i = 0; i < entities.; i++) {
+        //    
+        //}
+        int i = 0;
         for(WoonGroup g : entities){
-            WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
-            list.add(dto);
+            //WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
+            map.put("groupno", Long.toString(g.getGroupno()));
+            map.put("groupInfo", g.getGroupInfo());
+            map.put("groupName", g.getGroupName());
+            list.add(map);
+            i++;
         }
+        
         System.out.println(list);
-        return list;
+        return null;
     }
     //그룹원 목록 조회
     
