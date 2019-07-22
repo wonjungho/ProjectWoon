@@ -8,6 +8,7 @@ import com.woon.web.repositories.WoonUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,6 +48,13 @@ public class WoonUserController {
     public WoonUserDTO login(@RequestBody WoonUserDTO dto) {
         return config.modelMapper().map(repo.findUserByUserEmailAndPassword(dto.getUserEmail(), dto.getPassword()),
                 WoonUserDTO.class);
+    }
+
+    // 마이페이지
+    @GetMapping("/mypage/{id}")
+    public WoonUserDTO mypage(@PathVariable String id) {
+        repo.findUserByUserEmail(id);
+        return config.modelMapper().map(repo.findUserByUserEmail(id), WoonUserDTO.class);
     }
 
     // 비밀번호 수정
