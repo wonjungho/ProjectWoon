@@ -59,11 +59,11 @@ public class WoonGroupController {
      * @param dto WoonGroupDTO
      * @return HashMap
      */
-    @PostMapping("/{uno}")
-    public HashMap<String, String> save(@PathVariable String uno, @RequestBody WoonGroupDTO dto) {
+    @PostMapping("/{id}")
+    public HashMap<String, String> save(@PathVariable String id, @RequestBody WoonGroupDTO dto) {
         System.out.println("Post save(dto) 입장");
         // user id 정상적으롤 받았는지 확인
-        System.out.println("USER ID: " + uno);
+        System.out.println("USER EMAIL: " + id);
 
         System.out.println("GROUP NAME: " + dto.getGroupName());
         System.out.println("GROUP LEADER: " + dto.getGroupInfo());
@@ -82,8 +82,8 @@ public class WoonGroupController {
         
         //그룹에 가입하는 user entity
         WoonUser userEntity = new WoonUser();
-        // 해당 식별키에 해당하는 단일 엔티티 반환
-        userEntity = userRepo.findById(Long.parseLong(uno)).get();
+        // 유저 이메일로 해당하는 단일 엔티티 반환
+        userEntity = userRepo.findUserByUserEmail(id);
         //woonjoingroup엔터티에 woonuser의 pk값 집어넣기.
         wjgEntity.setWoonUsers(userEntity);
         //그룹 생성하는 유저가 그룹 리더 -> groupleader 값 1을 가진다.
@@ -96,11 +96,11 @@ public class WoonGroupController {
         return map;
     }
     //그룹 가입
-    @PostMapping("/{uno}/{groupno}")
-    public HashMap<String, String> joinGroup(@PathVariable String uno, @PathVariable String groupno) {
+    @PostMapping("/{id}/{groupno}")
+    public HashMap<String, String> joinGroup(@PathVariable String id, @PathVariable String groupno) {
         System.out.println("insertGroup 입장");
         // group no 정상적으롤 받았는지 확인
-        System.out.println("User no: " + uno);
+        System.out.println("User email: " + id);
         System.out.println("Group no: " + groupno);
         HashMap<String, String> map = new HashMap<>();
         
@@ -113,8 +113,8 @@ public class WoonGroupController {
         wjgEntity.setWoonGroups(wgEntity);
         
         wjgEntity.setGroupLeader("0");
-        // uno 로 user 엔터티 가져오기.
-        WoonUser userEntity = userRepo.findById(Long.parseLong(uno)).get();
+        // 유저 이메일로 단일 user 엔터티 가져오기.
+        WoonUser userEntity = userRepo.findUserByUserEmail(id);
         //woonjoingroup엔터티에 woonuser의 pk값 집어넣기.
         wjgEntity.setWoonUsers(userEntity);
         //수정내용 적용
@@ -124,9 +124,14 @@ public class WoonGroupController {
         return map;
     }
     //가입한 그룹 목록 조회
-    @GetMapping("/list/{uno}")
-    public List<WoonGroupDTO> findAllGroups(@PathVariable String uno){
+    @GetMapping("/list/{id}")
+    public List<WoonGroupDTO> findAllGroups(@PathVariable String id){
         System.out.println("findAllGroups 입장");
+        //유저 pk값 구하기
+        //1. 유저 이메일로 단일 유저 엔터티 구하기
+        //2. 가져온 유저 엔터티에서 uno(pk)값 구하기
+        WoonUser userEntity = userRepo.findUserByUserEmail(id);
+        Long uno =userEntity.getUno();
         Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
         List<WoonGroupDTO> list = new ArrayList<>();
         for(WoonGroup g : entities){
@@ -152,9 +157,12 @@ public class WoonGroupController {
     //  방장이 아닐 때(tbl_joingroups. group_leader 값이 0)
     //  joingroups 테이블에서 delete
     //  uno(유저pk) 와 현재 해당 groupno로 해당 record 접근 가능
-    @DeleteMapping("/delete/{uno}/{groupno}")
-    public void deleteByUnoAndGroupno(@PathVariable Long uno, @PathVariable Long groupno){
-        System.out.println("deleteByUnoAndGroupno 입장, uno: "+uno+", groupno: "+groupno);
+    @DeleteMapping("/delete/{id}/{groupno}")
+    public void deleteByUnoAndGroupno(@PathVariable String id, @PathVariable Long groupno){
+        System.out.println("deleteByUnoAndGroupno 입장, user email: "+id+", groupno: "+groupno);
+        // 유저 이메일로 단일 user 엔터티 가져오기.
+        WoonUser userEntity = userRepo.findUserByUserEmail(id);
+        Long uno = userEntity.getUno();
         joinGroupRepo.deleteByUnoAndGroupno(uno,groupno);
     }
     //그룹 수정 (그룹 리더인 경우)
@@ -169,5 +177,7 @@ public class WoonGroupController {
         groupRepo.save(wgEntity);
         map.put("result", "SUCCESS");
         return map;
-    }  
+    }
+    //그룹원 초대 처리 필요
+    
 }
