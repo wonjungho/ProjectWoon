@@ -5,7 +5,6 @@ import axios from 'axios';
 
 class WoonGroupInvite extends Component{
     state={open:false,
-        uno:'1',//하드코딩 테스트용
         groupName:'',
         groupInfo:''
       }
@@ -70,6 +69,8 @@ class WoonGroupInvite extends Component{
         )
     }
     createGroup =(e)=>{
+        let loginId = sessionStorage.getItem('loginId')
+        console.log(loginId)
         e.preventDefault();
         let data ={
           groupName:this.state.groupName,
@@ -80,8 +81,8 @@ class WoonGroupInvite extends Component{
           'Content-Type':'application/json',
           'Authorization':'JWT fefege..'
         }
-        alert('uno: ' + this.state.uno)
-        axios.post(`http://localhost:9000/groups/`+ this.state.uno ,data,{headers:header})
+        
+        axios.post(`http://localhost:9000/groups/${loginId}`,data,{headers:header})
         .then(res=>{
           alert(res.data.result);
           this.setState({
