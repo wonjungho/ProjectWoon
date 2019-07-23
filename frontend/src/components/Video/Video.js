@@ -10,22 +10,27 @@ class Video extends ReactQueryParams{
       //have place to render video for the WebRTCClient component
       render() {
         return (
-          <div className="App">
-            <video width="25%"  id="localVideo" autoPlay playsInline  muted="muted"></video>
-            <video width="50%" id="remoteVideo" autoPlay playsInline ></video>
-            <WebRTCClient
-              video={true}
-              autoRegister = {true}
-              sipDomain={decodeURIComponent(this.queryParams.domain)}
-              sipServer={decodeURIComponent(this.queryParams.sipserver)}
-              sipUser={decodeURIComponent(this.queryParams.userid)}
-              sipPassword={decodeURIComponent(this.queryParams.password)}
-              destination={decodeURIComponent(this.queryParams.destination)}
-              metaData={{param1:"value1",obj1:{objparam1:"objvalue1"}}}
-              //alertVideoUrl="alertVideoUrl"
-              //ringbackVideoUrl="ringbackVideoUrl"
-            />
-          </div>
+        <div className="container">
+        <h1 className="heading">Room example</h1>
+        <p className="note">
+          Change Room mode (before join in a room):
+        <a href="#">mesh</a> / <a href="#sfu">sfu</a>
+        </p>
+        <div className="room">
+        <div>
+          <video id="js-local-stream"></video>
+          <input type="text" placeholder="Room Name" id="js-room-id"></input>
+          <button id="js-join-trigger">Join</button>
+          <button id="js-leave-trigger">Leave</button>
+        </div>
+        <div className="remote-streams" id="js-remote-streams"></div>
+        <div>
+          <pre className="messages" id="js-messages"></pre>
+          <input type="text" id="js-local-text"></input>
+          <button id="js-send-trigger">Send</button>
+        </div>
+      </div>
+    </div>
         );
       }
 }

@@ -12,7 +12,7 @@ class WoonMain extends Component{
         return(
             <BrowserRouter>
             <Box gridArea="main" justify="center" align="center">
-                <Route path="/" exac component={WoonIndexPage}/>
+                <Route path="/main" exac component={WoonIndexPage}/>
                 <Route path="/chat" exac component={WoonChat}/>
                 <Route path="/signup" exac component={WoonSignUp}/>
                 <Route path="/video" exact component={Video}/>
