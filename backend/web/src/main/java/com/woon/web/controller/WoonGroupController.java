@@ -137,27 +137,25 @@ public class WoonGroupController {
         
         Long uno =userEntity.getUno();
         Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
-        HashMap<String, String> map = new HashMap<String, String>();
         
-        List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
+        List<WoonGroupDTO> list = new ArrayList<>();
         
-        //for (int i = 0; i < entities.; i++) {
-        //    
-        //}
-        int i = 0;
         for(WoonGroup g : entities){
-            //WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
-            map.put("groupno", Long.toString(g.getGroupno()));
-            map.put("groupInfo", g.getGroupInfo());
-            map.put("groupName", g.getGroupName());
-            list.add(map);
-            i++;
+            WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
+            list.add(dto);
         }
-        
         System.out.println(list);
-        return null;
+        return list;  
     }
-    //그룹원 목록 조회
+    //가입한 그룹의 리더인지 판단.
+    @GetMapping("/chkLeader/{id}/{groupno}")
+    public String checkLeader(@PathVariable String id, @PathVariable Long groupno){
+        WoonUser userEntity = userRepo.findUserByUserEmail(id);
+        Long uno = userEntity.getUno();
+        //WoonJoinGroup wjgEntity = joinGroupRepo.findByUnoAndGroupno(uno, groupno);
+        String chkLeader = joinGroupRepo.checkLeader(uno,groupno);
+        return chkLeader;
+    }
     
     //그룹 삭제 (전제: 그룹리더인 경우)
     //  tbl_groups 의 해당 그룹 record를 삭제하면 cascade 처리 결과 

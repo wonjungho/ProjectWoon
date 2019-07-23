@@ -16,4 +16,6 @@ public interface WoonJoinGroupRepository extends CrudRepository<WoonJoinGroup, L
     @Query(value="DELETE FROM tbl_joingroups WHERE uno=?1 and groupno=?2",nativeQuery=true)
     void deleteByUnoAndGroupno(Long uno, Long groupno);
     
+    @Query(value="SELECT GROUP_leader FROM tbl_joingroups jg WHERE jg.uno=?1 and jg.groupno=?2",nativeQuery=true)
+	public String checkLeader(Long uno, Long groupno); 
 }
