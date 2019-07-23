@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
 import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button,
-  Box,
-  Image,
-  Form,
-  FormField
+  Table,TableHeader,TableRow,TableCell,TableBody,
+  Button,Box,Image,Form,FormField
 } from 'grommet'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import './WoonMyPage.css'
 
 class WoonMyPage extends Component {
   
@@ -23,7 +16,8 @@ class WoonMyPage extends Component {
       loginUser: '',
       curpass: '',
       modipass: '',
-      modipasschk: ''
+      modipasschk: '',
+      selectedImg:null
     }
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
@@ -113,9 +107,14 @@ class WoonMyPage extends Component {
                 <strong>프로필</strong>
               </TableCell>
               <TableCell>
-                <Box height='small' width='small'>
+                <Form>
+                <Box className='imgbox' height='small' width='small'>
                   <Image fit='cover' src={profileImg} alt='profile' />
                 </Box>
+                <label id='uploadlabel' for="uploadBtn">선택</label>
+                <input id='uploadBtn' type='file' onChange={this.changeImg}/>
+                <Button primary label='적용' onClick={this.modiImg}/>
+                </Form>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -197,10 +196,16 @@ class WoonMyPage extends Component {
     this.setState({
       [name]: target.value
     })
-    console.log("loginpwd: " +this.state.loginUser.password)
-    console.log("curpass: " +this.state.curpass)
-    console.log("modipass: "+this.state.modipass)
-    console.log("modipasschk: "+this.state.modipasschk)
+  }
+  changeImg = e => {
+    console.log(e.target.files[0])
+    this.setState({selectedImg:e.target.files[0]})
+  }
+
+  modiImg = () => {
+    let data = new FormData()
+    data.append('file', this.state.selectedImg)
+    
   }
 }
 export default WoonMyPage
