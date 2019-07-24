@@ -7,8 +7,8 @@ import Signup from './WoonChatSignup'
 import {default as Chatkit} from '@pusher/chatkit-server'
 
 const chatkit = new Chatkit({
-  instanceLocator:"v1:us1:b973e804-2620-4833-b199-6875732dc499",
-  key:"f17782ad-2c7a-4fec-980f-e58734a949fd:ogOPLK/2CPSKos8QnE3gZzZoog/ALBLJ1tTTK8clkAI="
+  instanceLocator:"v1:us1:33c87227-c65f-4548-a524-8f1590d7e617",
+  key:"d9da8246-862e-4f30-9915-a074a2cd53c1:LB5AizmACyJnDyANal1Sk7PqfRLxb2CXzf9KIPgaGjI="
 })
 class WoonChat extends Component{
   constructor(props){

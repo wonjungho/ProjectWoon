@@ -16,10 +16,10 @@ class WoonChatMessages extends Component{
   }
   componentDidMount() {
     const chatManager = new ChatManager({
-        instanceLocator: "v1:us1:b973e804-2620-4833-b199-6875732dc499",
+        instanceLocator: "v1:us1:33c87227-c65f-4548-a524-8f1590d7e617",
         userId: this.props.currentId,
         tokenProvider: new TokenProvider({
-            url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/b973e804-2620-4833-b199-6875732dc499/token"
+            url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/33c87227-c65f-4548-a524-8f1590d7e617/token"
         })
     })
     chatManager
@@ -27,7 +27,7 @@ class WoonChatMessages extends Component{
                 .then(currentUser => {
                     this.setState({ currentUser: currentUser })
                     return currentUser.subscribeToRoom({
-                        roomId: "21669625",
+                        roomId: "20093294",
                         messageLimit: 100,
                         hooks: {
                             onMessage: message => {
