@@ -25,42 +25,47 @@ class WoonGroupList extends Component{
         open:!this.state.open
       })
     }
-    renderDropContent_1() {
+    renderDropContent_1 = () => {
       return(
         <Box>
-          <Anchor>그룹수정</Anchor>
+          <Anchor href='/groupmodipage'>그룹수정</Anchor>
           <Anchor>그룹삭제</Anchor>
           <Anchor>채팅방 참여</Anchor>
         </Box>
       ) 
     }
-    renderDropContent_0() {
+    renderDropContent_0 = () => {
       return(
         <Box>
+          <Anchor href='/groupmodipage'>그룹수정</Anchor>
+          <Anchor>그룹삭제</Anchor>
           <Anchor>채팅방 참여</Anchor>
           <Anchor>나가기</Anchor>
         </Box>
       ) 
     }
+    
     //처음 페이지 로드 후 
     checkGroupLeader(groupno){
       //alert('groupno : '+ groupno)
       const gn = groupno;
       const id = sessionStorage.getItem('loginId')
+      let grouLeader = this.state.groupLeader;
       
       function axioschk(){
-        //alert(gn);
+        alert(gn);
         axios.get(`http://localhost:9000/groups/chkLeader/${id}/${gn}`)
         .then(res =>{
           console.log('그룹리더체크성공')
           console.log(res.data)
+          
+          console.log('chkLeader :' + res.data)
+          console.log('groupLeader :' + grouLeader)
           this.setState({
-            groupLeader:""+res.data
+            
           })
-          alert(this.state.groupLeader)
-          //console.log('chkLeader :' + res.data)
-          //this.setState({
-          //  groupLeader: res.data })
+          
+          
         }).catch(e => {
           //alert('그룹리더체크실패')
         })
@@ -91,8 +96,7 @@ class WoonGroupList extends Component{
                 >
                   <Anchor
                     icon={<CircleInformation />} color="white"
-                    //background='url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)'
-                    // texture="url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)"
+                    
                   />
                 </DropButton>
               </Box>
@@ -128,13 +132,46 @@ class WoonGroupList extends Component{
         this.setState({
             items: res.data            
         })
-        console.log(this.state.items[0])
+        console.log(this.state.items)
         
       }).catch(e=>{
         // alert('ERROR')
-      })
-      
+      }) 
     }
+    //그룹 가입
+    joinGroup (groupno) {
+      let loginId = sessionStorage.getItem('loginId')
+      axios.get(`http://localhost:9000/groups/${loginId}/${groupno}`)
+      .then(res => {
+        alert('SUCCESS')
+      }).catch(e=>{
+        alert('ERROR')
+      })
+    }
+    //그룹 수정
+    modigroup(e){
+      e.preventDefault()
+      let data ={
+        groupno: '',
+        groupInfo: ''
+      }
+      let headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'JWT fefege..'
+      }
+      axios
+        .put(`http://localhost:9000/groups/modi`, JSON.stringify(data), { headers: headers })
+        .then(res =>{
+          alert('그룹 내용이 수정되었습니다.')
+          
+        }).catch(e=>{
+          //alert('ERROR')
+        })
+    }
+
+    
+    
+    
     
 }
 export default WoonGroupList

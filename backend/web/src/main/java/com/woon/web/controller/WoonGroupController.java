@@ -92,7 +92,7 @@ public class WoonGroupController {
         //그룹 생성하는 유저가 그룹 리더 -> groupleader 값 1을 가진다.
         wjgEntity.setGroupLeader("1");
 
-        System.out.println("엔티티로 바뀐 정보: "+ wgEntity.toString());
+//       System.out.println("엔티티로 바뀐 정보: "+ wgEntity.toString());
         groupRepo.save(wgEntity);
         
         map.put("result", "SUCCESS");
