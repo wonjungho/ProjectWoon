@@ -29,11 +29,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.java.Log;
+
 /**
  * WoonGroupController
  */
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
+@Log
 @RequestMapping("/groups")
 public class WoonGroupController {
     @Autowired
@@ -128,7 +131,7 @@ public class WoonGroupController {
     }
     //가입한 그룹 목록 조회
     @GetMapping("/list/{id}")
-    public List<WoonGroupDTO> findAllGroups(@PathVariable String id){
+    public List<Object[]> findAllGroups(@PathVariable String id){
         System.out.println("findAllGroups 입장");
         //유저 pk값 구하기
         //1. 유저 이메일로 단일 유저 엔터티 구하기
@@ -136,17 +139,18 @@ public class WoonGroupController {
         WoonUser userEntity = userRepo.findUserByUserEmail(id);
         
         Long uno =userEntity.getUno();
-        Iterable<WoonGroup> entities = groupRepo.findAllByUno(uno);
         
-        List<WoonGroupDTO> list = new ArrayList<>();
+        List<Object[]> gList = groupRepo.findAllByUno(uno);
+        /* for (Object[] g : gList){
+            log.info("gList "+ g);
+        } */
         
-        for(WoonGroup g : entities){
-            WoonGroupDTO dto = config.modelMapper().map(g, WoonGroupDTO.class);
-            list.add(dto);
-        }
-        System.out.println(list);
-        return list;  
+        return gList;
     }
+    //가입한 하나의 그룹 정보 조회
+    //@GetMapping("/{id}")
+    //public WoonGroup findByUnoAndGroupno()
+    
     //가입한 그룹의 리더인지 판단.
     @GetMapping("/chkLeader/{id}/{groupno}")
     public String checkLeader(@PathVariable String id, @PathVariable Long groupno){

@@ -25,22 +25,20 @@ class WoonGroupList extends Component{
         open:!this.state.open
       })
     }
-    renderDropContent_1 = () => {
+    renderDropContent_1 = (groupno) => {
       return(
         <Box>
           <Anchor href='/groupmodipage'>그룹수정</Anchor>
-          <Anchor>그룹삭제</Anchor>
+          <Anchor onClick={this.delGroup(groupno)}>그룹삭제</Anchor>
           <Anchor>채팅방 참여</Anchor>
         </Box>
       ) 
     }
-    renderDropContent_0 = () => {
+    renderDropContent_0 = (groupno) => {
       return(
         <Box>
-          <Anchor href='/groupmodipage'>그룹수정</Anchor>
-          <Anchor>그룹삭제</Anchor>
           <Anchor>채팅방 참여</Anchor>
-          <Anchor>나가기</Anchor>
+          <Anchor onClick={this.withdrawGroup(groupno)}>그룹 탈퇴</Anchor>
         </Box>
       ) 
     }
@@ -63,9 +61,7 @@ class WoonGroupList extends Component{
           console.log('groupLeader :' + grouLeader)
           this.setState({
             
-          })
-          
-          
+          })  
         }).catch(e => {
           //alert('그룹리더체크실패')
         })
@@ -85,18 +81,16 @@ class WoonGroupList extends Component{
           ) : (
             this.state.items.map((item, index)=>(
               <Box key={index} direction="row">
-                <Text className="test">{item.groupName}</Text>
-                
+                <Text className="test">{item[2]}</Text>
                 <DropButton
                   alignSelf='center'
                   margin={{ vertical: 'small' }}
-                  dropContent={this.state.groupLeader==='1'?this.renderDropContent_1():this.renderDropContent_0()}
+                  dropContent={item[3]==='1'?this.renderDropContent_1(item[0]):this.renderDropContent_0(item[0])}
                   dropProps={{ align: { top: 'bottom' } }}
-                  onClick={this.checkGroupLeader(item.groupno)}
+                  
                 >
                   <Anchor
                     icon={<CircleInformation />} color="white"
-                    
                   />
                 </DropButton>
               </Box>
@@ -111,8 +105,7 @@ class WoonGroupList extends Component{
                 <WoonGroupInvite onClick={this.GroupClose}/>
               )}
               </Box>
-              {groupListArea}
-                    
+              {groupListArea}      
             </Box>
         )
     }
@@ -129,6 +122,7 @@ class WoonGroupList extends Component{
       axios.get(`http://localhost:9000/groups/list/${loginId}`)
       .then(res=>{
         //alert('SUCCESS')
+        
         this.setState({
             items: res.data            
         })
@@ -168,10 +162,31 @@ class WoonGroupList extends Component{
           //alert('ERROR')
         })
     }
-
+    //그룹 삭제
+    delGroup(groupno){
+      console.log('삭제 진입')
+      const gn = groupno;
     
-    
-    
+      function axiosDel(){
+        console.log('axiosDel 그룹 삭제 입장')
+        console.log('groupno: '+gn)
+        axios.delete(`http://localhost:9000/groups/delete/${gn}`)
+      }
+      return axiosDel; 
+    }
+    //그룹 탈퇴
+    withdrawGroup(groupno){
+      console.log('탈퇴 진입')
+      const loginId = sessionStorage.getItem('loginId')
+      const gn = groupno; 
+      function axioWithdraw(){
+        console.log('axioWithdraw 입장')
+        console.log('loginId: '+loginId)
+        console.log('groupno: '+gn)
+        axios.delete(`http://localhost:9000/groups/delete/${loginId}/${gn}`)
+      }
+      return axioWithdraw;
+    }
     
 }
 export default WoonGroupList

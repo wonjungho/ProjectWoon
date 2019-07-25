@@ -1,7 +1,23 @@
 import React,{Component} from 'react'
 import {Box,Form,FormField,Button,Heading,Text, TextArea} from 'grommet'
+import Axios from 'axios';
 
 class WoonGroupModiPage extends Component{
+    constructor (props) {
+      super(props)
+      this.state = {
+        open: false,
+        loginUser: '',
+      }
+    }
+    componentDidMount () {
+      console.log('componentDidMount')
+      let loginId = sessionStorage.getItem('loginId')
+      /* Axios.get(`http://localhost:9000/group/${loginId}/${groupno}`)
+      .then(res =>{
+
+      }) */
+    }
     render(){
         return(
             <Box width='large'>
