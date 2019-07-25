@@ -1,9 +1,5 @@
 package com.woon.web.common;
 
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -15,6 +11,11 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+
 /**
  * GmailService
  */
@@ -24,7 +25,7 @@ import javax.mail.internet.MimeMessage;
 public class GmailService implements MailService{
 
     @Override
-    public void sendMail(String toEmail,String subject,String content){
+    public void sendMail(String toEmail,String subject,String content) {
         String user = "BitProjectWoon@gmail.com"; // 네이버일 경우 네이버 계정, gmail경우 gmail 계정
         String password = "bitcamp123";   // 패스워드
         // SMTP 서버 정보를 설정한다.
@@ -46,9 +47,9 @@ public class GmailService implements MailService{
             //수신자메일주소
             message.addRecipient(Message.RecipientType.TO, add);
             // Subject
-            message.setSubject(subject); //메일 제목을 입력
+            message.setSubject(subject, "EUC-KR"); //메일 제목을 입력
             // Text
-            message.setContent(content,"text/html");    //메일 내용을 입력
+            message.setContent(content,"text/html; charset=UTF-8");    //메일 내용을 입력
             // send the message
             Transport.send(message); ////전송
             System.out.println("message sent successfully...");
