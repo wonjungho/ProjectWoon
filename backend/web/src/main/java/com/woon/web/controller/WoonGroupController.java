@@ -105,7 +105,7 @@ public class WoonGroupController {
     @PostMapping("/{id}/{groupno}")
     public HashMap<String, String> joinGroup(@PathVariable String id, @PathVariable String groupno) {
         System.out.println("insertGroup 입장");
-        // group no 정상적으롤 받았는지 확인
+        
         System.out.println("User email: " + id);
         System.out.println("Group no: " + groupno);
         HashMap<String, String> map = new HashMap<>();
@@ -125,7 +125,7 @@ public class WoonGroupController {
         wjgEntity.setWoonUsers(userEntity);
         //수정내용 적용
         joinGroupRepo.save(wjgEntity);
-        System.out.println("엔티티로 바뀐 정보: "+ wjgEntity.toString());
+        
         map.put("result", "SUCCESS");
         return map;
     }
@@ -148,8 +148,12 @@ public class WoonGroupController {
         return gList;
     }
     //가입한 하나의 그룹 정보 조회
-    //@GetMapping("/{id}")
-    //public WoonGroup findByUnoAndGroupno()
+    @GetMapping("/{groupno}")
+    public WoonGroupDTO findByGroupno(@PathVariable Long groupno){
+        WoonGroup wgEntity = groupRepo.findByGroupno(groupno);
+        WoonGroupDTO dto = config.modelMapper().map(wgEntity, WoonGroupDTO.class);
+        return dto;
+    }
     
     //가입한 그룹의 리더인지 판단.
     @GetMapping("/chkLeader/{id}/{groupno}")
@@ -185,7 +189,6 @@ public class WoonGroupController {
     }
     //그룹 수정 (그룹 리더인 경우)
     @PutMapping("/modi")
-    //public HashMap<String, String> update(@RequestBody WoongroupDTO @PathVariable String groupno, @PathVariable String groupInfo){
     public HashMap<String, String> update(@RequestBody WoonGroupDTO dto){    
         System.out.println("update 입장. groupno: "+ dto.getGroupno() 
                             +", groupInfo: "+dto.getGroupInfo());

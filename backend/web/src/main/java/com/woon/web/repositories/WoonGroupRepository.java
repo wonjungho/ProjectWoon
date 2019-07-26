@@ -19,6 +19,7 @@ public interface WoonGroupRepository extends CrudRepository<WoonGroup, Long> {
     @Query(value = "SELECT g.groupno, g.group_info, g.group_name FROM tbl_groups g INNER JOIN tbl_joingroups jg ON g.groupno = jg.groupno WHERE jg.uno LIKE ?1 AND g.group LIKE ?2",nativeQuery=true)
     WoonGroup findByUnoAndGroupno(Long uno, Long groupno);
     
+    WoonGroup findByGroupno(Long groupno);
     
 }
     
