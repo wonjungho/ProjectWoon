@@ -61,14 +61,14 @@ class WoonLogin extends Component {
           </Box>
           <Box flex={false} as='footer' align='center'>
             <Button
-              // type='submit'
+              type='submit'
               label='로그인'
               onClick={this.login}
               primary
             />
           </Box>
           <Box flex={false} as='footer' align='center'>
-            <Anchor href='/signup'>SignUp</Anchor>/<Anchor>FindMyInfo</Anchor>
+            <Anchor href='/signup'>SignUp</Anchor>/<Anchor href='/findpass'>FindMyInfo</Anchor>
           </Box>
         </Box>
       </Layer>

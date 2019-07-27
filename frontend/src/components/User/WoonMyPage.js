@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import {
-  Table,TableHeader,TableRow,TableCell,TableBody,
-  Button,Box,Image,Form,FormField
+  Table,
+  TableHeader,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  Box,
+  Image,
+  Form,
+  FormField
 } from 'grommet'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import './WoonMyPage.css'
 
 class WoonMyPage extends Component {
-  
   constructor (props) {
     super(props)
     this.state = {
@@ -17,11 +24,12 @@ class WoonMyPage extends Component {
       curpass: '',
       modipass: '',
       modipasschk: '',
-      selectedImg:null
+      selectedImg: ''
     }
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
     this.modipass = this.modipass.bind(this)
+    this.changeImg = this.changeImg.bind(this)
   }
   onOpen = () => this.setState({ open: true })
   onClose = () => this.setState({ open: false })
@@ -108,12 +116,19 @@ class WoonMyPage extends Component {
               </TableCell>
               <TableCell>
                 <Form>
-                <Box className='imgbox' height='small' width='small'>
-                  <Image fit='cover' src={profileImg} alt='profile' />
-                </Box>
-                <label id='uploadlabel' for="uploadBtn">선택</label>
-                <input id='uploadBtn' type='file' onChange={this.changeImg}/>
-                <Button primary label='적용' onClick={this.modiImg}/>
+                  <Box className='imgbox' height='small' width='small'>
+                    <Image
+                      fit='cover'
+                      src={profileImg}
+                      alt='profile'
+                      id='profile'
+                    />
+                  </Box>
+                  <label id='uploadlabel' for='uploadBtn'>
+                    등록 / 변경
+                  </label>
+                  <input id='uploadBtn' type='file' onChange={this.changeImg} />
+                  {/* <Button primary label='적용' onClick={this.modiImg}/> */}
                 </Form>
               </TableCell>
             </TableRow>
@@ -138,16 +153,16 @@ class WoonMyPage extends Component {
     })
   }
 
-  modipass (e) {
+  modipass = e => {
     e.preventDefault()
     // let curpwd = this.state.loginUser.password
     // console.log(curpwd);
-    
-    if (this.state.curpass != this.state.loginUser.password) {
+
+    if (this.state.curpass !== this.state.loginUser.password) {
       alert('현재 비밀번호가 일치하지 않습니다.')
     } else {
       let data = {
-        userEmail: this.state.loginUser.password,
+        userEmail: this.state.loginUser.userEmail,
         password: this.state.modipass
       }
       let headers = {
@@ -155,10 +170,17 @@ class WoonMyPage extends Component {
         Authorization: 'JWT fefege..'
       }
       axios
-        .put(`http://localhost:9000/users/modi`, JSON.stringify(data), { headers: headers })
+        .put(`http://localhost:9000/users/modi`, JSON.stringify(data), {
+          headers: headers
+        })
         .then(res => {
           alert('비밀번호가 수정되었습니다')
-          this.setState({ curpass: '', modipass: '', modipasschk: '', open:false })
+          this.setState({
+            curpass: '',
+            modipass: '',
+            modipasschk: '',
+            open: false
+          })
           // var target = e.target;
           // target.setAttribute("data-dismiss", "modal");
           // target.click();
@@ -197,15 +219,64 @@ class WoonMyPage extends Component {
       [name]: target.value
     })
   }
+
   changeImg = e => {
     console.log(e.target.files[0])
-    this.setState({selectedImg:e.target.files[0]})
+    // console.log(e.target.files[1])
+    this.setState({ selectedImg: e.target.files[0] })
+
+    let data = new FormData()
+    data.append('file', e.target.files[0] )
+    data.append('user', this.state.loginUser.userEmail)
+    // console.log(data)
+
+    let fileReader = new FileReader()
+    // // let conf = null
+    fileReader.readAsDataURL(e.target.files[0])
+    fileReader.onload = function (e) {
+      document.getElementById('profile').src = e.target.result
+      setTimeout(function () {
+        Swal.fire({
+          position: 'top',
+          title: '수정하시겠습니까?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인'
+        }).then(result => {
+          if (result.value) {
+            console.dir(data)
+            console.log(result.value)
+            alert('!!!!!!!!!!!!!!')
+
+            const headers = {
+              'Content-Type': 'multipart/form-data'
+            }
+            axios
+              .post(`http://localhost:9000/users/modiprofile`, data, {
+                headers: headers
+              })
+              .then(res => {
+                alert('프로필이 등록되었습니다.')
+              })
+              .catch(e => {
+                alert('프로필 수정 실패.')
+              })
+          }
+        })
+      }, 50)
+    }
   }
 
-  modiImg = () => {
-    let data = new FormData()
-    data.append('file', this.state.selectedImg)
-    
-  }
+  // modiImg = () => {
+  //   let data = new FormData()
+  //   data.append('file', this.state.selectedImg)
+  //   data.append('userEmail', this.state.loginUser.userEmail)
+  //   const headers = {
+  //     'Content-Type': 'multipart/form-data'
+  //   }
+  //   axios.post(`http://localhost:9000/users/modiprofile`)
+  // }
 }
 export default WoonMyPage

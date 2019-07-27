@@ -1,4 +1,8 @@
-#uploadBtn {
+.signupForm > span {
+
+}
+
+#profileBtn {
     position: absolute;
   width: 1px;
   height: 1px;
@@ -9,12 +13,12 @@
   border: 0;
   }
 
-  .imgbox {
-    margin-bottom: 5px;
+  .signupimgbox {
+    margin-bottom:2%;
   }
 
-  #uploadlabel {
-    margin: 0 16px;
+  #profilelabel {
+      margin-bottom: 2%;
     display: inline-block;
     box-sizing: border-box;
     cursor: pointer;
@@ -34,6 +38,9 @@
     transition: 0.1s ease-in-out;
     font-weight: bold;
   }
-  #uploadlabel:hover {
+  #profilelabel:hover {
     box-shadow: 0px 0px 0px 2px #34a8eb;
+  }
+  #buttonarea{
+    margin-left:25%
   }
