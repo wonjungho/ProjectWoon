@@ -88,6 +88,8 @@ class WoonGroupInvite extends Component{
             groupName: '',
             groupInfo: ''
           })
+          this.onClose()
+          window.location.reload();
         })
         .catch(e=>{
           alert('실패');

@@ -1,52 +1,91 @@
 import React,{Component} from 'react'
 import {Box,Form,FormField,Button,Heading,Text, TextArea} from 'grommet'
-import Axios from 'axios';
+import axios from 'axios';
+
 
 class WoonGroupModiPage extends Component{
+
     constructor (props) {
       super(props)
       this.state = {
         open: false,
         loginUser: '',
+        groupName: '',
+        groupInfo: '',
       }
     }
     componentDidMount () {
-      console.log('componentDidMount')
       let loginId = sessionStorage.getItem('loginId')
-      /* Axios.get(`http://localhost:9000/group/${loginId}/${groupno}`)
-      .then(res =>{
-
-      }) */
+      let groupno = this.props.match.params.groupno
+      console.log('DidMount groupno: ' +groupno)
+        axios.get(`http://localhost:9000/groups/${groupno}`)
+        .then(res =>{
+          
+          this.setState({
+            groupName: res.data.groupName,
+            groupInfo: res.data.groupInfo
+          })
+        }).catch(e=>{
+          alert('해당 그룹정보 가져오기 실패')
+        })
+      
     }
     render(){
+        
         return(
             <Box width='large'>
           <Form>
             <Heading level={2} margin='none'>
               그룹수정
             </Heading>
-            <h1>이곳에는 그룹명이 들어갈것입니다!</h1>
-            <FormField label="GroupInfo">
-              <Box
-              width="large"
-              height="small"    
-              // border={{ color: "brand", size: "medium" }}
-              >
-              <TextArea
-               size="xlarge"
-               name="groupInfo"
-               fill
-              />
-              </Box>
+            <h1>{this.state.groupName}</h1>
+              <FormField label="GroupInfo">
+                <Box
+                width="large"
+                height="small"    
+                // border={{ color: "brand", size: "medium" }}
+                >
+                <TextArea
+                size="xlarge"
+                name="groupInfo"
+                
+                >
+                 {this.state.groupInfo} 
+                </TextArea>
+                </Box>
               </FormField>   
             <Button
               type='submit'
-              label='SignUp'
+              label='Save'
               primary
+              //onClick={this.modigroup()}
             />
           </Form>
         </Box>
         )
     }
+    //그룹 수정
+    modigroup(){
+      alert('modigroup')
+      let data ={
+        groupno: this.state.groupno,
+        groupInfo: ''
+      }
+      let headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'JWT fefege..'
+      }
+      
+      /* axios
+        .put(`http://localhost:9000/groups/modi`, JSON.stringify(data), { headers: headers })
+        .then(res =>{
+          alert('그룹 내용이 수정되었습니다.')
+          
+        }).catch(e=>{
+          //alert('ERROR')
+        }) */
+    
+      }
+    
 }
 export default WoonGroupModiPage

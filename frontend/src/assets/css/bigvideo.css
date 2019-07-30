@@ -54,3 +54,9 @@
 .changepass{
   position: fixed;
 }
+.grouplistPagewrapper{
+  position:fixed;
+  width:1350px;
+  height:650px;
+  border: 1px solid black;
+}
