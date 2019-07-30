@@ -60,3 +60,6 @@
   height:650px;
   border: 1px solid black;
 }
+.typer{
+  position: fixed;
+}
