@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
-import { Box,Text,Button,Anchor, Heading } from 'grommet';
+import { Box,Text,Button,Anchor, Heading, DropButton } from 'grommet';
 import {Attraction,AddCircle} from 'grommet-icons'
 import WoonGroupInvite from './WoonGroupInvite'
-import '../../assets/css/bigvideo.css'
+import 'css/bigvideo.css'
 import axios from 'axios';
 class WoonGroupListPage extends Component{
   constructor(props){
@@ -18,11 +18,56 @@ class WoonGroupListPage extends Component{
   }
   onOpen=()=>this.setState({open:true})
   onClose=()=>this.setState({open:false})
-    GroupClose=()=>{
-      this.setState({
-        open:!this.state.open
-      })
+  GroupClose=()=>{
+    this.setState({
+      open:!this.state.open
+    })
+  }
+
+  renderDropContent_1 = (groupno) => {
+    return(
+      <Box>
+        <Anchor href='/groupmodipage'>그룹수정</Anchor>
+        <Anchor onClick={this.delGroup(groupno)}>그룹삭제</Anchor>
+        <Anchor>채팅방 참여</Anchor>
+      </Box>
+    ) 
+  }
+  renderDropContent_0 = (groupno) => {
+    return(
+      <Box>
+        <Anchor>채팅방 참여</Anchor>
+        <Anchor onClick={this.withdrawGroup(groupno)}>그룹 탈퇴</Anchor>
+      </Box>
+    ) 
+  }
+
+  //그룹 삭제
+  delGroup(groupno){
+    console.log('삭제 진입')
+    const gn = groupno;
+  
+    function axiosDel(){
+      console.log('axiosDel 그룹 삭제 입장')
+      console.log('groupno: '+gn)
+      axios.delete(`http://localhost:9000/groups/delete/${gn}`)
     }
+    return axiosDel; 
+  }
+  //그룹 탈퇴
+  withdrawGroup(groupno){
+    console.log('탈퇴 진입')
+    const loginId = sessionStorage.getItem('loginId')
+    const gn = groupno; 
+    function axioWithdraw(){
+      console.log('axioWithdraw 입장')
+      console.log('loginId: '+loginId)
+      console.log('groupno: '+gn)
+      axios.delete(`http://localhost:9000/groups/delete/${loginId}/${gn}`)
+    }
+    return axioWithdraw;
+  }
+  
   render(){
     const{open} =this.state
     const groupListArea = 
@@ -37,7 +82,16 @@ class WoonGroupListPage extends Component{
       >
         <Attraction size="large" />
         <Text className="test2">{item[2]}</Text>
-        <Button label="Button" onClick={() => {}} />
+        {/* <Button label="Button" onClick={() => {}} /> */}
+        <DropButton
+          label="Button"
+          alignSelf='center'
+          margin={{ vertical: 'small' }}
+          dropContent={item[3]==='1'?this.renderDropContent_1(item[0]):this.renderDropContent_0(item[0])}
+          dropProps={{ align: { top: 'bottom' } }}
+        >
+                  
+                </DropButton>
       </Box>));
     return(
       <Box className="grouplistPagewrapper" background="white" round>

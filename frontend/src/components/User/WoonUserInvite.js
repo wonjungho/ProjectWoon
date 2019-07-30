@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import {Box,Layer,Heading,Button,FormField,TextInput} from 'grommet'
 import {Close} from 'grommet-icons'
 import axios from 'axios';
-import { throwStatement } from '@babel/types';
 
 class WoonUserInvite extends Component{
     state={

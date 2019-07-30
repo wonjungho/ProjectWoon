@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Box, Button, Text, Anchor, DropButton } from 'grommet'
 import { createBrowserHistory } from 'history';
 import WoonLogin from './User/WoonLogin'
-import '../assets/css/bigvideo.css'
-import './WoonHeader.css'
+import 'css/bigvideo.css'
+import 'css/WoonHeader.css'
 class WoonHeader extends Component {
   state = { open: false, reload: false }
   constructor (props) {

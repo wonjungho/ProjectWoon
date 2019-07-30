@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Video, Box, Text, Heading, Button } from 'grommet'
 import video from '../assets/images/video.mp4'
 import Typer from './WoonTyping'
-import '../assets/css/bigvideo.css'
+import 'css/bigvideo.css'
 
 
 class WoonIndexPage extends Component {

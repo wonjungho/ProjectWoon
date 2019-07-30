@@ -13,8 +13,8 @@ import {
 } from 'grommet'
 import Swal from 'sweetalert2'
 import axios from 'axios'
-import './WoonMyPage.css'
-import '../../assets/css/bigvideo.css'
+import 'css/WoonMyPage.css'
+import 'css/bigvideo.css'
 
 class WoonMyPage extends Component {
   constructor (props) {

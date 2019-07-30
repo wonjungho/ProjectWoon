@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import "../assets/css/typing.css"
-import "../assets/css/bigvideo.css"
+import "css/typing.css"
+import "css/bigvideo.css"
 import { Heading,Box } from 'grommet';
 
 class Typer extends Component {

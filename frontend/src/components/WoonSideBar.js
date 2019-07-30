@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
 import {Box} from 'grommet'
-import WoonGroupList from './Group/WoonGroupList'
 import WoonUserList from  './User/WoonUserList'
 
 class WoonSidebar extends Component{

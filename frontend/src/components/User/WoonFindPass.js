@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Box, Form, FormField, Button, Heading } from 'grommet'
 import tttt from '../../assets/images/main.svg'
-import bigvideo from '../../assets/css/bigvideo.css'
+import bigvideo from 'css/bigvideo.css'
 import axios from 'axios'
-import './WoonFindPass.css'
+import 'css/WoonFindPass.css'
 
 
 class WoonFindPass extends Component {

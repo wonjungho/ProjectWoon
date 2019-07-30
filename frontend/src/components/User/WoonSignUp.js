@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Box, Form, FormField, Button, Heading, Image } from 'grommet'
 import axios from 'axios'
-import './WoonSignUp.css'
-import '../../assets/css/bigvideo.css'
+import 'css/WoonSignUp.css'
+import 'css/bigvideo.css'
 import DefaultProfile from '../../assets/images/default-profile-icon.jpg'
 
 class WoonSignUp extends Component {
