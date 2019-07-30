@@ -74,14 +74,12 @@ class WoonGroupInvite extends Component{
         e.preventDefault();
         let data ={
           groupName:this.state.groupName,
-          groupInfo:this.state.groupInfo
-          
+          groupInfo:this.state.groupInfo  
         }
         let header={
           'Content-Type':'application/json',
           'Authorization':'JWT fefege..'
         }
-        
         axios.post(`http://localhost:9000/groups/${loginId}`,data,{headers:header})
         .then(res=>{
           alert(res.data.result);
@@ -94,6 +92,7 @@ class WoonGroupInvite extends Component{
         .catch(e=>{
           alert('실패');
         })
+        
       }
       handleChange=(e)=>{
         const target =e.target

@@ -1,6 +1,8 @@
 import React,{Component} from 'react'
 import {Box,Layer,Heading,Button,FormField,TextInput} from 'grommet'
 import {Close} from 'grommet-icons'
+import axios from 'axios';
+import { throwStatement } from '@babel/types';
 
 class WoonUserInvite extends Component{
     state={
@@ -29,7 +31,7 @@ class WoonUserInvite extends Component{
                   width="medium"
                   height="small"
                   pad="medium"
-                  onSubmit={this.onUserClose}
+                  onSubmit={this.userInvite}
                 >
                   <Box flex={false} direction="row" justify="between">
                     <Heading level={2} margin="none">
@@ -39,7 +41,7 @@ class WoonUserInvite extends Component{
                   </Box>
                   <Box flex="grow" overflow="auto" pad={{ vertical: "medium" }}>
                   <FormField label="userEmail">
-                  <TextInput name="userEmail"/>
+                  <TextInput name="userEmail" onChange={this.handleChange}/>
                   </FormField>
                   </Box>
                   <Box flex={false} as="footer" align="center">
@@ -52,6 +54,23 @@ class WoonUserInvite extends Component{
                   </Box>
                 </Layer>
         )
+    }
+    userInvite=()=>{
+      let email=this.state.userEmail
+      axios.get(`http://localhost:9000/groups/inviteUser/${email}`)
+      .then(res=>{
+        alert('정상적으로 이메일이 전송되었습니다.')
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+    handleChange= e =>{
+      const target =e.target
+      const name =target.name
+      this.setState({
+        [name]:target.value
+      })
     }
 }
 export default WoonUserInvite

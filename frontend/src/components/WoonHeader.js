@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import { Box, Button, Text, Anchor, DropButton } from 'grommet'
 import WoonLogin from './User/WoonLogin'
+import '../assets/css/bigvideo.css'
 class WoonHeader extends Component {
   state = { open: false, reload: false }
   constructor (props) {
     super(props)
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
+    this.fn = props.fn
     // this.mypage = this.mypage.bind(this)
   }
-  onOpen = () => this.setState({ open: true })
+  onOpen = () => {this.setState({ open: true })
+  }
   onClose = () => this.setState({ open: false })
   LoginClose = () => {
     this.setState({
@@ -58,7 +61,7 @@ class WoonHeader extends Component {
         align='center'
         justify='between'
         pad={{ horizontal: 'medium', vertical: 'small' }}
-        background='#285943'
+        background='black'
       >
         <Button>
           <Text size='large' className='test'>
@@ -69,7 +72,7 @@ class WoonHeader extends Component {
           로그인
         </Button> */}
         {loginArea}
-        {open && <WoonLogin onClick={this.LoginClose} />}
+        {open && <WoonLogin onClick={this.LoginClose} test={this.fn}/>}
       </Box>
     )
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Box, Form, FormField, Button, Heading, Image } from 'grommet'
 import axios from 'axios'
 import './WoonSignUp.css'
+import '../../assets/css/bigvideo.css'
 import DefaultProfile from '../../assets/images/default-profile-icon.jpg'
 
 class WoonSignUp extends Component {
@@ -16,8 +17,9 @@ class WoonSignUp extends Component {
   // }
   render () {
     return (
-      <div>
-        <Box width='medium'>
+      <div className="content3">
+        <Box width='large' background={{color:"white"}} className="signupformwrapper" round>
+        <Box width='medium' className="signupform">
           <Form onSubmit={this.signup}>
             <Heading level={2} margin='none'>
               회원가입
@@ -89,6 +91,7 @@ class WoonSignUp extends Component {
               />
             </Box>
           </Form>
+        </Box>
         </Box>
       </div>
     )

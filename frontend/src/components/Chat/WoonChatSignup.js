@@ -7,7 +7,7 @@ class WoonChatSignup extends Component{
         this.state ={  
             username:""
         }
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this)            
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     handleChange(e){

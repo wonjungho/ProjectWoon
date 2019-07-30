@@ -5,9 +5,19 @@ import WoonSideBar from './WoonSideBar'
 import WoonMain from './WoonMain'
 
 class WoonGrid extends Component{
-    state={sidebar:true}
+    static count =1;
     constructor(props){
       super(props)
+      this.state={
+        sidebar:true,temp:''
+      }
+    }
+    fn=()=>{
+      console.log('aaaa')
+      this.setState({
+        temp:""+WoonGrid.count++
+      })
+      console.log(this.state.temp)
     }
     render(){
         return(
@@ -21,8 +31,7 @@ class WoonGrid extends Component{
               { name: "main", start: [1, 1], end: [1, 1] }
             ]}
           >
-            <WoonHeader/>
-            <WoonSideBar/>
+            <WoonHeader fn={this.fn}/>
             <WoonMain/>
         </Grid>
         )

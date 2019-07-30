@@ -1,0 +1,33 @@
+.bigvideo{
+    position: fixed;
+    right: 0;
+    min-width: 100%;
+}
+.content {
+  position: fixed;
+}
+.content2{
+ position:fixed;
+ text-align:center;
+ min-width:100%;
+ min-height: 94%
+}
+.content3{
+  position: fixed;
+  color:white;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+.signupformwrapper{
+  width: 1350px;
+  height: 750px;
+  border: 1px solid black;
+}
+.signupform{
+  display: table;
+  margin:auto;
+}
+.findpassword{
+  position: fixed;
+} 

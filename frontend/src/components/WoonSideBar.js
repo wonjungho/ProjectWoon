@@ -4,7 +4,15 @@ import WoonGroupList from './Group/WoonGroupList'
 import WoonUserList from  './User/WoonUserList'
 
 class WoonSidebar extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      temp:''
+    }      
+  }
     render(){
+      console.log('------------------------------')
+      console.log(this.props.temp)
         return(
                 <Box
                   gridArea="sidebar"
@@ -16,7 +24,6 @@ class WoonSidebar extends Component{
                   ]}
                 >
                   <Box>
-                    <WoonGroupList/>
                     <WoonUserList/>
                   </Box>
                 </Box>

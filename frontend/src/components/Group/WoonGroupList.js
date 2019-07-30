@@ -11,7 +11,8 @@ class WoonGroupList extends Component{
       reload:false,
       items:[],
       groupLeader:'',
-      groupno:''
+      groupno:'',
+      temp:''
     }
     constructor(props){
       super(props)
@@ -71,6 +72,7 @@ class WoonGroupList extends Component{
     }
     //reload=()=>this.setState({check:!this.state.check})
     render(){
+      this.showList();
       const temp = sessionStorage.getItem('loginId')
       const{open} =this.state
       const groupListArea =
@@ -87,7 +89,6 @@ class WoonGroupList extends Component{
                   margin={{ vertical: 'small' }}
                   dropContent={item[3]==='1'?this.renderDropContent_1(item[0]):this.renderDropContent_0(item[0])}
                   dropProps={{ align: { top: 'bottom' } }}
-                  
                 >
                   <Anchor
                     icon={<CircleInformation />} color="white"
@@ -99,6 +100,7 @@ class WoonGroupList extends Component{
         return(
             <Box margin={{ bottom:"50%" }}>
               <Box pad={{ horizontal: "medium", vertical: "small" }} direction="row">
+                <h2>temp:{this.props.temp}</h2>
               <Text className="test" margin={{top:"12px",right:"60px"}} >Group </Text>
               <Anchor icon={<AddCircle />} color="white" onClick={this.onOpen}/>
               {open&&(
@@ -113,9 +115,6 @@ class WoonGroupList extends Component{
       // alert('check')
       this.setState({ reload: !this.state.reload })
     }
-    componentDidMount(){
-      this.showList();
-    }
     showList=()=>{
       let loginId = sessionStorage.getItem('loginId')
       console.log(loginId)
@@ -124,10 +123,9 @@ class WoonGroupList extends Component{
         //alert('SUCCESS')
         
         this.setState({
-            items: res.data            
+            items: res.data,
+            temp:this.props.temp            
         })
-        console.log(this.state.items)
-        
       }).catch(e=>{
         // alert('ERROR')
       }) 
@@ -157,7 +155,6 @@ class WoonGroupList extends Component{
         .put(`http://localhost:9000/groups/modi`, JSON.stringify(data), { headers: headers })
         .then(res =>{
           alert('그룹 내용이 수정되었습니다.')
-          
         }).catch(e=>{
           //alert('ERROR')
         })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Box, Form, FormField, Button, Heading } from 'grommet'
 import tttt from '../../assets/images/main.svg'
+import bigvideo from '../../assets/css/bigvideo.css'
 import axios from 'axios'
 import './WoonFindPass.css'
 
@@ -20,7 +21,7 @@ class WoonFindPass extends Component {
 
     render () {
         return (
-          <Box direction="row" pad="xlarge">
+          <Box direction="row" pad="xlarge" className="findpassword" background={{color:"white"}} round>
             <Box width='medium'id="dddd">
               <Form>
                 <Heading level={2} margin='none'>

@@ -20,7 +20,7 @@ class WoonUser extends Component{
     render(){
       const{useropen} =this.state
         return(
-            <Box margin={{ top:"50%" }}>
+            <Box>
                    <Box margin={{ bottom:"50%" }}>
               <Box pad={{ horizontal: "medium", vertical: "small" }} direction="row">
               <Text className="test" margin={{top:"12px",right:"60px"}} >User </Text>
