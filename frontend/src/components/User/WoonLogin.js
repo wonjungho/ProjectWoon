@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { createBrowserHistory } from 'history';
 import {Layer,Box,Heading,Button,Anchor,FormField,TextInput} from 'grommet'
 import { Close } from 'grommet-icons'
 import axios from 'axios'
@@ -10,9 +11,10 @@ class WoonLogin extends Component {
     userEmail: '',
     password: ''
   }
-  // constructor (props) {
-  //   super(props)
-  // }
+  constructor (props) {
+    super(props)
+    
+  }
   onOpen = () => this.setState({ open: true })
   onClose = () => {
     this.setState({ open: false })
@@ -75,6 +77,7 @@ class WoonLogin extends Component {
     )
   }
   login = e => {
+    const history = createBrowserHistory()
     e.preventDefault()
     let data = {
       userEmail: this.state.userEmail,
@@ -89,7 +92,9 @@ class WoonLogin extends Component {
         alert('로그인되었습니다.')
         sessionStorage.setItem('loginId',res.data.userEmail)
         sessionStorage.setItem('loginName',res.data.userName)
+        history.push('/grouplistpage')
         this.onClose()
+        window.location.reload();
       })
       .catch(e => {
         alert('로그인실패')

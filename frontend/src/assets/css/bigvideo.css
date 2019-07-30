@@ -27,7 +27,7 @@
 }
 .signupformwrapper{
   width: 1350px;
-  height: 750px;
+  height: 680px;
   border: 1px solid black;
 }
 .signupform{
@@ -36,14 +36,21 @@
 }
 .findpassword{
   position: fixed;
+  width: 1350px;
+  height: 680px;
+  border: 1px solid black;
 } 
 .mypagewrapper{
   position:fixed;
   width: 1350px;
-  height: 700px;
+  height: 680px;
   border: 1px solid black;
 }
 .mypageform{
   display: table;
-  margin: auto;
+  margin-left:20%;
+  position: fixed;
+}
+.changepass{
+  position: fixed;
 }

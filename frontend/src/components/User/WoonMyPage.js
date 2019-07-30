@@ -94,14 +94,6 @@ class WoonMyPage extends Component {
               </TableCell>
               <TableCell>
                 <Box align='center'>
-                  {/* <Button primary label='수정' onClick={this.onOpen}/> */}
-                  {/* <Form>
-                    <FormField name="curpass" placeholder="현재 비밀번호" />
-                    <FormField name="modipass" placeholder="새로운 비밀번호" />
-                    <FormField name="modipasschk" placeholder="새로운 비밀번호 확인" />
-                    <Button primary label='변경하기'/>
-                    <Button primary color="#777" label='취소' onClick={this.modiPassClose}/>
-                  </Form> */}
                   {modiPassArea}
                 </Box>
               </TableCell>

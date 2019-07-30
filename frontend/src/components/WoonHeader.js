@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Box, Button, Text, Anchor, DropButton } from 'grommet'
+import { createBrowserHistory } from 'history';
 import WoonLogin from './User/WoonLogin'
 import '../assets/css/bigvideo.css'
 import './WoonHeader.css'
 class WoonHeader extends Component {
   state = { open: false, reload: false }
   constructor (props) {
+    const history = createBrowserHistory();
     super(props)
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
@@ -85,15 +87,13 @@ class WoonHeader extends Component {
     this.setState({ reload: !this.state.reload })
   }
   logout = () => {
+    const history = createBrowserHistory()
     alert('로그아웃 완료')
     sessionStorage.clear()
+    history.push("/")
     this.check()
-    // this.props.history.push("/")
+    window.location.reload();
   }
-  // mypage = (e) => {
-  //   e.preventDefault()
-  //   window.location = 'mypage';
-  // }
 }
 
 export default WoonHeader

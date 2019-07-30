@@ -56,7 +56,7 @@ class WoonFindPass extends Component {
                 </Box>
               </Form>
             </Box>
-            <Box align="end" id="ddddd">
+            <Box align="end" id="monkey">
             <img src={tttt} alt=""/>
             </Box>
           </Box>
