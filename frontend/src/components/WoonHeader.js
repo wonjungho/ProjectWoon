@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Box, Button, Text, Anchor, DropButton } from 'grommet'
 import WoonLogin from './User/WoonLogin'
 import '../assets/css/bigvideo.css'
+import './WoonHeader.css'
 class WoonHeader extends Component {
   state = { open: false, reload: false }
   constructor (props) {
@@ -11,7 +12,8 @@ class WoonHeader extends Component {
     this.fn = props.fn
     // this.mypage = this.mypage.bind(this)
   }
-  onOpen = () => {this.setState({ open: true })
+  onOpen = () => {
+    this.setState({ open: true })
   }
   onClose = () => this.setState({ open: false })
   LoginClose = () => {
@@ -21,9 +23,9 @@ class WoonHeader extends Component {
   }
 
   renderItems = () => (
-    <Box>
-      <Anchor href='/mypage'>마이페이지</Anchor>
-      <Anchor onClick={this.logout}>로그아웃</Anchor>
+    <Box className='headerMenu'>
+      <Anchor className='menulist' href='/mypage'>마이페이지</Anchor>
+      <Anchor className='menulist' onClick={this.logout}>로그아웃</Anchor>
     </Box>
   )
 
@@ -40,14 +42,15 @@ class WoonHeader extends Component {
       ) : (
         // (<Button className='test primary' onClick={this.logout}>로그아웃</Button>)
         <DropButton
+          className='headerProfile'
           alignSelf='center'
           margin={{ vertical: 'small' }}
           dropContent={this.renderItems()}
           dropProps={{ align: { top: 'bottom' } }}
         >
           <Box
-            height='36px'
-            width='36px'
+            height='29px'
+            width='29px'
             round='full'
             background='url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)'
             // texture="url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)"
@@ -72,7 +75,7 @@ class WoonHeader extends Component {
           로그인
         </Button> */}
         {loginArea}
-        {open && <WoonLogin onClick={this.LoginClose} test={this.fn}/>}
+        {open && <WoonLogin onClick={this.LoginClose} test={this.fn} />}
       </Box>
     )
   }

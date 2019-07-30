@@ -14,6 +14,7 @@ import {
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import './WoonMyPage.css'
+import '../../assets/css/bigvideo.css'
 
 class WoonMyPage extends Component {
   constructor (props) {
@@ -76,7 +77,8 @@ class WoonMyPage extends Component {
       )
 
     return (
-      <Box width='large'>
+      <Box className="mypagewrapper" background="white" round>
+      <Box width='large' className="mypageform" background="white">
         <Table>
           <TableHeader />
           <TableBody>
@@ -143,6 +145,7 @@ class WoonMyPage extends Component {
             onClick={this.leave}
           />
         </Box>
+      </Box>
       </Box>
     )
   }

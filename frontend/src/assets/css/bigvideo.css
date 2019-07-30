@@ -37,3 +37,13 @@
 .findpassword{
   position: fixed;
 } 
+.mypagewrapper{
+  position:fixed;
+  width: 1350px;
+  height: 700px;
+  border: 1px solid black;
+}
+.mypageform{
+  display: table;
+  margin: auto;
+}
