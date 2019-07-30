@@ -12,20 +12,70 @@ class WoonSignUp extends Component {
     userName: '',
     profile: null
   }
-  // constructor (props) {
-  //   super(props)
-  // }
   render () {
+    let signup ={
+      position: "fixed",
+      color:"white",
+      display: "table",
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
+    let signupformwrapper={
+      width: "1350px",
+      height: "650px",
+      border: "1px solid black"
+    }
+    let signupform={
+      display: "table",
+      margin:"auto"
+    }
+    let profileBtn={
+      position: "absolute",
+      width: "1px",
+      height: "1px",
+      padding: "0",
+      margin: "-1px",
+      overflow: "hidden",
+      clip:"rect(0,0,0,0)",
+      border: "0"
+    }
+    let signupimgbox ={
+      marginBottom:"2%"
+    }
+    let profilelabel ={
+      marginBottom: "2%",
+      display: "inline-block",
+      boxSizing: "border-box",
+      cursor: "pointer",
+      outline: "none",
+      font: "inherit",
+      textDecoration: "none",
+      border: "2px solid #34a8eb",
+      borderRadius: "18px",
+      color: "#444444",
+      padding: "4px 32px",
+      fontSize: "18px",
+      lineHeight: "24px",
+      background: "#34a8eb",
+      color: "#f8f8f8",
+      borderRadius: "18px",
+      WebkitTransition: "0.1s ease-in-out",
+      transition: "0.1s ease-in-out",
+      fontWeight: "bold",
+    }
+    
+    let buttonarea={
+      marginLeft:"25%"
+    }
     return (
-      <div className="content3">
-        <Box width='large' background={{color:"white"}} className="signupformwrapper" round>
-        <Box width='medium' className="signupform">
+      <div style={signup}>
+        <Box width='large' background={{color:"white"}} style={signupformwrapper} round>
+        <Box width='medium' style={signupform}>
           <Form onSubmit={this.signup}>
             <Heading level={2} margin='none'>
               회원가입
             </Heading>
             <FormField
-              className='signupForm'
               label='Email'
               name='userEmail'
               type='text'
@@ -59,7 +109,7 @@ class WoonSignUp extends Component {
               }}
             />
             <Box align='center'>
-              <Box className='signupimgbox' height='small' width='small'>
+              <Box  height='small' width='small' style={signupimgbox}>
                 <Image
                   fit='cover'
                   src={DefaultProfile}
@@ -69,18 +119,19 @@ class WoonSignUp extends Component {
               </Box>
             </Box>
             <Box align='center'>
-              <label id='profilelabel' for='profileBtn'>
+              <label id="profilelabel" for='profileBtn' style={profilelabel}>
                 프로필 등록
               </label>
             </Box>
             <FormField
               id='profileBtn'
+              style={profileBtn}
               // label='Photo'
               name='profile'
               type='file'
               onChange={this.changeImg}
             />
-            <Box id='buttonarea' direction='row'>
+            <Box direction='row' style={buttonarea}>
               <Button type='submit' label='SignUp' primary />
               <Button
                 className='test'

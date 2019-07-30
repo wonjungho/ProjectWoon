@@ -15,10 +15,6 @@ class WoonFindPass extends Component {
         updatepass:'',
         updatepasschk:'',
       }
-    // constructor(props){
-    //     super(props)
-    // }
-
     render () {
         return (
           <Box direction="row" pad="xlarge" className="findpassword" background={{color:"white"}} round>

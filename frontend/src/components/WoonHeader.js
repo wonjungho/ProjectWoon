@@ -23,11 +23,42 @@ class WoonHeader extends Component {
       open: !this.state.open
     })
   }
-
   renderItems = () => (
     <Box className='headerMenu'>
-      <Anchor className='menulist' href='/mypage'>마이페이지</Anchor>
-      <Anchor className='menulist' onClick={this.logout}>로그아웃</Anchor>
+      <Anchor  href='/mypage' style={{
+        boxSizing: "border-box",
+        cursor: "pointer",
+        font: "inherit",
+        marginTop: "0",
+        textDecoration: "none",
+        background: "transparent",
+        overflow: "visible",
+        textTransform: "none",
+        color: "inherit",
+        border: "none",
+        paddingTop: "2px",
+        paddingBottom: "2px",
+        textAlign: "inherit",
+        color: "#444444",
+        borderBottom: "#444444"
+      }}>마이페이지</Anchor>
+      <Anchor style={{
+        boxSizing: "border-box",
+        cursor: "pointer",
+        font: "inherit",
+        marginTop: "0",
+        textDecoration: "none",
+        background: "transparent",
+        overflow: "visible",
+        textTransform: "none",
+        color: "inherit",
+        border: "none",
+        paddingTop: "2px",
+        paddingBottom: "2px",
+        textAlign: "inherit",
+        color: "#444444",
+        borderBottom: "#444444"
+      }} onClick={this.logout}>로그아웃</Anchor>
     </Box>
   )
 
@@ -35,16 +66,23 @@ class WoonHeader extends Component {
     const temp = sessionStorage.getItem('loginId')
 
     const { open } = this.state
-
+    let fontcolor={
+      fontFamily: "Nanum Gothic, sans-serif",
+      fontWeight:"bold", 
+      color:"white"
+    }
+    let headerProfile={  
+        marginTop: "0px",
+        marginBottom: "0px"
+    }
     let loginArea =
       temp == null ? (
-        <Button className='test primary' onClick={this.onOpen}>
+        <Button className='test' onClick={this.onOpen} style={fontcolor}>
           로그인
         </Button>
       ) : (
-        // (<Button className='test primary' onClick={this.logout}>로그아웃</Button>)
         <DropButton
-          className='headerProfile'
+          style={headerProfile}
           alignSelf='center'
           margin={{ vertical: 'small' }}
           dropContent={this.renderItems()}

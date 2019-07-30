@@ -41,6 +41,53 @@ class WoonMyPage extends Component {
   }
 
   render () {
+    let uploadBtn ={
+      position: "absolute",
+    width: "1px",
+    height: "1px",
+    padding: "0",
+    margin: "-1px",
+    overflow: "hidden",
+    clip:"rect(0,0,0,0)",
+    border: "0"
+    }
+    let uploadlabel ={
+      margin: "0 16px",
+      display: "inline-block",
+      boxSizing: "border-box",
+      cursor: "pointer",
+      outline: "none",
+      font: "inherit",
+      textDecoration: "none",
+      border: "2px solid #34a8eb",
+      borderRadius: "18px",
+      color: "#444444",
+      padding: "4px 32px",
+      fontSize: "18px",
+      lineHeight: "24px",
+      background: "#34a8eb",
+      color: "#f8f8f8",
+      borderRadius: "18px",
+      WebkitTransition: "0.1s ease-in-out",
+      transition: "0.1s ease-in-out",
+      fontWeight: "bold",
+    }
+    let fontcolor={
+      fontFamily: "Nanum Gothic, sans-serif",
+      fontWeight:"bold", 
+      color:"white"
+    }
+    let mypagewrapper={
+      position:"fixed",
+      width: "1350px",
+      height: "650px",
+      border: "1px solid black"
+    }
+    let mypageform={
+      display: "table",
+      marginLeft:"20%",
+      position: "fixed"
+    }
     let profileImg =
       this.state.loginUser.profile == null
         ? 'https://icon-library.net//images/default-profile-icon/default-profile-icon-24.jpg'
@@ -77,8 +124,8 @@ class WoonMyPage extends Component {
       )
 
     return (
-      <Box className="mypagewrapper" background="white" round>
-      <Box width='large' className="mypageform" background="white">
+      <Box className="mypagewrapper" background="white" round style={mypagewrapper}>
+      <Box width='large' className="mypageform" background="white" style={mypageform}>
         <Table>
           <TableHeader />
           <TableBody>
@@ -110,7 +157,7 @@ class WoonMyPage extends Component {
               </TableCell>
               <TableCell>
                 <Form>
-                  <Box className='imgbox' height='small' width='small'>
+                  <Box className='imgbox' height='small' width='small' style={{marginBottom:"5px"}}>
                     <Image
                       fit='cover'
                       src={profileImg}
@@ -118,10 +165,10 @@ class WoonMyPage extends Component {
                       id='profile'
                     />
                   </Box>
-                  <label id='uploadlabel' for='uploadBtn'>
+                  <label id='uploadlabel' for='uploadBtn' style={uploadlabel}>
                     등록 / 변경
                   </label>
-                  <input id='uploadBtn' type='file' onChange={this.changeImg} />
+                  <input id='uploadBtn' style={uploadBtn} type='file' onChange={this.changeImg} />
                   {/* <Button primary label='적용' onClick={this.modiImg}/> */}
                 </Form>
               </TableCell>
@@ -131,6 +178,7 @@ class WoonMyPage extends Component {
         <Box align='end'>
           <Button
             className='test'
+            style={fontcolor}
             primary
             color='red'
             label='회원탈퇴'

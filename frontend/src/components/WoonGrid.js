@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import {Grid} from 'grommet'
 import WoonHeader from './WoonHeader'
-import WoonSideBar from './WoonSideBar'
 import WoonMain from './WoonMain'
 
 class WoonGrid extends Component{
