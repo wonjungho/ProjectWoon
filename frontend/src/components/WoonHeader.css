@@ -1,0 +1,32 @@
+.headerProfile {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.headerMenu {
+    
+}
+
+.menulist {
+    box-sizing: border-box;
+    cursor: pointer;
+    font: inherit;
+    margin-top: 0;
+    text-decoration: none;
+    background: transparent;
+    overflow: visible;
+    text-transform: none;
+    color: inherit;
+    border: none;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: inherit;
+    color: #444444;
+    border-bottom: #444444;
+}
+.menulist:hover {
+    background-color: rgba(221,221,221,0.4);
+    text-decoration: none;
+    color: #000000;
+
+}
