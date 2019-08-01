@@ -84,10 +84,13 @@ class WoonLogin extends Component {
       password: this.state.password
     }
     const headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT fefege..',
+      "Access-Control-Allow-Origin": "*"
+
     }
     axios
-      .post(`http://localhost:9000/users/login`, JSON.stringify(data), { headers: headers })
+      .post(`http://13.125.131.15/users/login`, JSON.stringify(data), { headers: headers })
       .then(res => {
         alert('로그인되었습니다.')
         sessionStorage.setItem('loginId',res.data.userEmail)

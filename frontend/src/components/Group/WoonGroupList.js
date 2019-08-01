@@ -53,7 +53,7 @@ class WoonGroupList extends Component{
       
       function axioschk(){
         alert(gn);
-        axios.get(`http://localhost:9000/groups/chkLeader/${id}/${gn}`)
+        axios.get(`http://13.125.131.15/groups/chkLeader/${id}/${gn}`)
         .then(res =>{
           console.log('그룹리더체크성공')
           console.log(res.data)
@@ -118,7 +118,7 @@ class WoonGroupList extends Component{
     showList=()=>{
       let loginId = sessionStorage.getItem('loginId')
       console.log(loginId)
-      axios.get(`http://localhost:9000/groups/list/${loginId}`)
+      axios.get(`http://13.125.131.15/groups/list/${loginId}`)
       .then(res=>{
         //alert('SUCCESS')
         
@@ -133,32 +133,14 @@ class WoonGroupList extends Component{
     //그룹 가입
     joinGroup (groupno) {
       let loginId = sessionStorage.getItem('loginId')
-      axios.get(`http://localhost:9000/groups/${loginId}/${groupno}`)
+      axios.get(`http://13.125.131.15/groups/${loginId}/${groupno}`)
       .then(res => {
         alert('SUCCESS')
       }).catch(e=>{
         alert('ERROR')
       })
     }
-    //그룹 수정
-    modigroup(e){
-      e.preventDefault()
-      let data ={
-        groupno: '',
-        groupInfo: ''
-      }
-      let headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'JWT fefege..'
-      }
-      axios
-        .put(`http://localhost:9000/groups/modi`, JSON.stringify(data), { headers: headers })
-        .then(res =>{
-          alert('그룹 내용이 수정되었습니다.')
-        }).catch(e=>{
-          //alert('ERROR')
-        })
-    }
+    
     //그룹 삭제
     delGroup(groupno){
       console.log('삭제 진입')
@@ -167,7 +149,7 @@ class WoonGroupList extends Component{
       function axiosDel(){
         console.log('axiosDel 그룹 삭제 입장')
         console.log('groupno: '+gn)
-        axios.delete(`http://localhost:9000/groups/delete/${gn}`)
+        axios.delete(`http://13.125.131.15/groups/delete/${gn}`)
       }
       return axiosDel; 
     }
@@ -180,7 +162,7 @@ class WoonGroupList extends Component{
         console.log('axioWithdraw 입장')
         console.log('loginId: '+loginId)
         console.log('groupno: '+gn)
-        axios.delete(`http://localhost:9000/groups/delete/${loginId}/${gn}`)
+        axios.delete(`http://13.125.131.15/groups/delete/${loginId}/${gn}`)
       }
       return axioWithdraw;
     }

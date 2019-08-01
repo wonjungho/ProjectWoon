@@ -80,7 +80,7 @@ class WoonGroupInvite extends Component{
           'Content-Type':'application/json',
           'Authorization':'JWT fefege..'
         }
-        axios.post(`http://localhost:9000/groups/${loginId}`,data,{headers:header})
+        axios.post(`http://13.125.131.15/groups/${loginId}`,data,{headers:header})
         .then(res=>{
           alert(res.data.result);
           this.setState({

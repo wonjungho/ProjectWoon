@@ -56,7 +56,7 @@ class WoonUserInvite extends Component{
     }
     userInvite=()=>{
       let email=this.state.userEmail
-      axios.get(`http://localhost:9000/groups/inviteUser/${email}`)
+      axios.get(`http://13.125.131.15/groups/inviteUser/${email}`)
       .then(res=>{
         alert('정상적으로 이메일이 전송되었습니다.')
       })

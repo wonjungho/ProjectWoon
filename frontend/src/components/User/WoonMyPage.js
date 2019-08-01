@@ -191,7 +191,7 @@ class WoonMyPage extends Component {
   }
   componentDidMount () {
     let loginId = sessionStorage.getItem('loginId')
-    axios.get(`http://localhost:9000/users/mypage/${loginId}`).then(res => {
+    axios.get(`http://13.125.131.15/users/mypage/${loginId}`).then(res => {
       this.setState({ loginUser: res.data })
     })
   }
@@ -210,10 +210,10 @@ class WoonMyPage extends Component {
       }
       let headers = {
         'Content-Type': 'application/json',
-        Authorization: 'JWT fefege..'
+        'Authorization': 'JWT fefege..'
       }
       axios
-        .put(`http://localhost:9000/users/modi`, JSON.stringify(data), {
+        .put(`http://13.125.131.15/users/modi`, JSON.stringify(data), {
           headers: headers
         })
         .then(res => {
@@ -245,7 +245,7 @@ class WoonMyPage extends Component {
     }).then(result => {
       if (result.value) {
         axios
-          .delete(`http://localhost:9000/users/delete/${loginId}`)
+          .delete(`http://13.125.131.15/users/delete/${loginId}`)
           .then(res => {
             sessionStorage.clear()
             Swal.fire('탈퇴가 완료되었습니다.')
@@ -294,10 +294,11 @@ class WoonMyPage extends Component {
             alert('!!!!!!!!!!!!!!')
 
             const headers = {
-              'Content-Type': 'multipart/form-data'
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'JWT fefege..'
             }
             axios
-              .post(`http://localhost:9000/users/modiprofile`, data, {
+              .post(`http://13.125.131.15/users/modiprofile`, data, {
                 headers: headers
               })
               .then(res => {
@@ -312,14 +313,6 @@ class WoonMyPage extends Component {
     }
   }
 
-  // modiImg = () => {
-  //   let data = new FormData()
-  //   data.append('file', this.state.selectedImg)
-  //   data.append('userEmail', this.state.loginUser.userEmail)
-  //   const headers = {
-  //     'Content-Type': 'multipart/form-data'
-  //   }
-  //   axios.post(`http://localhost:9000/users/modiprofile`)
-  // }
+  
 }
 export default WoonMyPage

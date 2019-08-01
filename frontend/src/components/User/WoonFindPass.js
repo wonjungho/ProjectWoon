@@ -65,10 +65,11 @@ class WoonFindPass extends Component {
           userName: this.state.finduserName
         }
         const headers = {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT fefege..'
         }
         axios
-          .post(`http://localhost:9000/users/findpass`, JSON.stringify(data), { headers: headers })
+          .post(`http://13.125.131.15/users/findpass`, JSON.stringify(data), { headers: headers })
           .then(res => {
             alert('입력하신 이메일로 임시 비밀번호가 전송되었습니다.\n해당 임시 비밀번호로 로그인 후 비밀번호 변경을 진행해주세요.')
             this.props.history.push('/')

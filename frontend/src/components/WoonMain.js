@@ -18,7 +18,7 @@ class WoonMain extends Component{
                 <Route path="/chat" exac component={WoonChat}/>
                 <Route path="/signup" exac component={WoonSignUp}/>
                 <Route path="/findpass" exac component={WoonFindPass}/>
-                <Route path="/groupmodipage" exac component={WoonGroupModiPage}/>
+                <Route path="/groupmodipage/:groupno" exac component={WoonGroupModiPage}/>
                 <Route path="/mypage" exact component={WoonMyPage}/>
                 <Route path="/grouplistpage" exact component={WoonGroupListPage}/>
             </Box>

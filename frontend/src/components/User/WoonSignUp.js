@@ -174,10 +174,11 @@ class WoonSignUp extends Component {
     signData.append('pass', data.password)
     const headers = {
       'Content-Type': 'multipart/form-data',
-      'processData': false
+      'processData': false,
+      'Authorization': 'JWT fefege..'
     }
     axios
-      .post(`http://localhost:9000/users/signup`, signData, {
+      .post(`http://13.125.131.15/users/signup`, signData, {
         headers: headers
       })
       .then(res => {

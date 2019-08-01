@@ -34,7 +34,7 @@ import lombok.extern.java.Log;
 /**
  * WoonGroupController
  */
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @Log
 @RequestMapping("/groups")
@@ -205,5 +205,8 @@ public class WoonGroupController {
        String content = "<h1>Hello! We are woon!</h1>";
        mail.sendMail(email, "초대이메일입니다",content);
    }
-    
+   @GetMapping("/test")
+   public String test() {
+	   return "성공";
+   }
 }
