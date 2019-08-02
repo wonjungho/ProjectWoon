@@ -8,6 +8,7 @@ import WoonIndexPage from './WoonIndexPage'
 import WoonGroupListPage from './Group/WoonGroupListPage'
 import WoonGroupModiPage from './Group/WoonGroupModiPage'
 import { BrowserRouter, Route } from 'react-router-dom';
+import WoonRTC from './WoonRTC'
 
 class WoonMain extends Component{
     render(){
@@ -21,6 +22,7 @@ class WoonMain extends Component{
                 <Route path="/groupmodipage/:groupno" exac component={WoonGroupModiPage}/>
                 <Route path="/mypage" exact component={WoonMyPage}/>
                 <Route path="/grouplistpage" exact component={WoonGroupListPage}/>
+                <Route path="/woonrtc" exact component={WoonRTC}/>
             </Box>
             </BrowserRouter>
         )

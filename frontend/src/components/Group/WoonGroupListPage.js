@@ -30,7 +30,7 @@ class WoonGroupListPage extends Component{
   renderDropContent_1 = (groupno) => {
     return(
       <Box>
-        <Anchor >채팅방 참여</Anchor>
+        <Anchor href={'/woonrtc'}>채팅방 참여</Anchor>
         <Anchor href={`/groupmodipage/${groupno}`}>그룹수정</Anchor>
         <Anchor onClick={this.delGroup(groupno)}>그룹삭제</Anchor>
       </Box>
