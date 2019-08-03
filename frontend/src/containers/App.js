@@ -4,6 +4,8 @@ import {grommet} from 'grommet/themes'
 import WoonGrid  from '../components/WoonGrid'
 import { BrowserRouter} from 'react-router-dom';   
 import './test.css'
+import '../assets/css/bigvideo.css'
+import '../assets/css/typing.css'
 class App extends Component{
   render(){
     return(

@@ -70,7 +70,6 @@ class WoonGroupInvite extends Component{
     }
     createGroup =(e)=>{
         let loginId = sessionStorage.getItem('loginId')
-        console.log(loginId)
         e.preventDefault();
         let data ={
           groupName:this.state.groupName,
@@ -82,7 +81,6 @@ class WoonGroupInvite extends Component{
         }
         axios.post(`http://13.125.131.15/groups/${loginId}`,data,{headers:header})
         .then(res=>{
-          alert(res.data.result);
           this.setState({
             open:false,
             groupName: '',

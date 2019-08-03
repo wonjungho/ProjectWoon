@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
-import { createBrowserHistory } from 'history';
-import {Layer,Box,Heading,Button,Anchor,FormField,TextInput} from 'grommet'
+import { createBrowserHistory } from 'history'
+import {
+  Layer,
+  Box,
+  Heading,
+  Button,
+  Anchor,
+  FormField,
+  TextInput
+} from 'grommet'
 import { Close } from 'grommet-icons'
 import axios from 'axios'
 
@@ -11,10 +19,7 @@ class WoonLogin extends Component {
     userEmail: '',
     password: ''
   }
-  constructor (props) {
-    super(props)
-    
-  }
+
   onOpen = () => this.setState({ open: true })
   onClose = () => {
     this.setState({ open: false })
@@ -36,7 +41,6 @@ class WoonLogin extends Component {
           width='medium'
           height='small'
           pad='medium'
-          // onSubmit={this.onClose}
         >
           <Box flex={false} direction='row' justify='between'>
             <Heading level={2} margin='none'>
@@ -62,15 +66,11 @@ class WoonLogin extends Component {
             </FormField>
           </Box>
           <Box flex={false} as='footer' align='center'>
-            <Button
-              type='submit'
-              label='로그인'
-              onClick={this.login}
-              primary
-            />
+            <Button type='submit' label='로그인' onClick={this.login} primary />
           </Box>
           <Box flex={false} as='footer' align='center'>
-            <Anchor href='/signup'>SignUp</Anchor>/<Anchor href='/findpass'>FindMyInfo</Anchor>
+            <Anchor href='/signup'>SignUp</Anchor>/
+            <Anchor href='/findpass'>FindMyInfo</Anchor>
           </Box>
         </Box>
       </Layer>
@@ -85,30 +85,30 @@ class WoonLogin extends Component {
     }
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'JWT fefege..',
-      "Access-Control-Allow-Origin": "*"
-
+      Authorization: 'JWT fefege..',
+      'Access-Control-Allow-Origin': '*'
     }
     axios
-      .post(`http://13.125.131.15/users/login`, JSON.stringify(data), { headers: headers })
+      .post(`http://localhost:9000/users/login`, JSON.stringify(data), {
+        headers: headers
+      })
       .then(res => {
         alert('로그인되었습니다.')
-        sessionStorage.setItem('loginId',res.data.userEmail)
-        sessionStorage.setItem('loginName',res.data.userName)
+        sessionStorage.setItem('loginId', res.data.userEmail)
+        sessionStorage.setItem('loginName', res.data.userName)
+        sessionStorage.setItem('loginProfile', res.data.profilePath)
         history.push('/grouplistpage')
         this.onClose()
-        window.location.reload();
+        window.location.reload()
       })
       .catch(e => {
-        alert('로그인실패')
+        alert('로그인을 실패하였습니다.')
       })
   }
 
   handleChange = e => {
     const { name, value } = e.target
     this.setState({ [name]: value })
-    console.log("userEmail: "+this.state.userEmail)
-    console.log("pass: "+this.state.password)
   }
 }
 

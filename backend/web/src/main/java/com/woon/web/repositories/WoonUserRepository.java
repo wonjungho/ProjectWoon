@@ -3,7 +3,6 @@ package com.woon.web.repositories;
 import com.woon.web.entities.WoonUser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**

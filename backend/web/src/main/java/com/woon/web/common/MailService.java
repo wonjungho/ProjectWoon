@@ -5,5 +5,5 @@ package com.woon.web.common;
  */
 public interface MailService {
 
-    void sendMail(String toEmail,String subject,String message);
+    void sendMail(String toEmail, String subject, String message);
 }

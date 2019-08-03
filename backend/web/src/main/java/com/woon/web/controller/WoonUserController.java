@@ -1,17 +1,27 @@
 package com.woon.web.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.woon.web.common.CommonConfig;
 import com.woon.web.common.GmailService;
 import com.woon.web.domain.WoonUserDTO;
 import com.woon.web.entities.WoonUser;
 import com.woon.web.repositories.WoonUserRepository;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +32,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,53 +45,65 @@ public class WoonUserController {
 
     @Autowired
     WoonUserDTO user;
-    @Autowired CommonConfig config;
+    @Autowired
+    CommonConfig config;
     @Autowired
     WoonUserRepository repo;
-    @Autowired GmailService gmail;
+    @Autowired
+    GmailService gmail;
 
+    // s3 관련
+    private static final String BUCKET_NAME = "BUCKET_NAME";
+    private static final String ACCESS_KEY = "ACCESS_KEY";
+    private static final String SECRET_KEY = "SECRET_KEY";
+    private static final String clientRegion = "ap-northeast-2";
+    private AmazonS3 s3;
+    private static final String cloudfront = "http:/cloudfront";
 
     // 회원가입
     @PostMapping("/signup")
-    public void signup(
-        @RequestParam("emailId") String id, @RequestParam("name") String name, @RequestParam("pass") String password,
-        @RequestParam(value="file", required = false) MultipartFile uploadfile) throws Exception {
+    public void signup(@RequestParam("emailId") String id, @RequestParam("name") String name,
+            @RequestParam("pass") String password,
+            @RequestParam(value = "file", required = false) MultipartFile uploadfile) throws Exception {
+
         WoonUser entity = new WoonUser();
-        
         entity.setUserEmail(id);
         entity.setPassword(password);
         entity.setUserName(name);
 
-        // entity.setProfile(dto.getpro);
+        String datePath = new SimpleDateFormat("/yyyy/MM/dd/HH").format(new Date());
+        AWSCredentials awsCredentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+        s3 = AmazonS3ClientBuilder.standard().withRegion(clientRegion)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
 
         if (uploadfile != null) {
-            // C:/ProjectWoon/frontend/public/local_img/woon/profile
-            String uploadPath = "C:/ProjectWoon/frontend/public/local_img/woon/profile";
-            SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH");
-            String datePath = sdf.format(new Date());
-            String ext = "";
-            // // System.out.println(uploadfile.getOriginalFilename());
-            int index = uploadfile.getOriginalFilename().lastIndexOf(".");
-            
-            if(index != -1) {
-                ext = uploadfile.getOriginalFilename().substring(index);
-            } // if
-            File file = new File(uploadPath + datePath); 
-            if(file.exists() == false) {
-                file.mkdirs();
-            } // if
-            
-            //이미지 이름 중복 방지를 위한 파일이름 랜덤생성
+            // 파일명 중복 방지
             String uName = UUID.randomUUID().toString();
-            uploadfile.transferTo(new File(uploadPath + datePath, uName + ext));
-    
-            entity.setProfile(uploadfile.getOriginalFilename());
-            entity.setProfilePath("/local_img/woon/profile" + datePath + "/" + uName + ext);
-            repo.save(entity);
-        } else {
-            repo.save(entity);
-        }
+            String ext = FilenameUtils.getExtension(uploadfile.getOriginalFilename());
+            String convName = uName + "." + ext;
+            // s3 업로드를 위해 multipart -> File convert
+            File convfile = new File(convName);
+            convfile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convfile);
+            fos.write(uploadfile.getBytes());
+            fos.close();
 
+            if (s3 != null) {
+                try {
+                    PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME + datePath, convName,
+                            convfile);
+                    putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead); // file permission
+                    s3.putObject(putObjectRequest);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                } finally {
+                    s3 = null;
+                }
+            }
+            entity.setProfile(uploadfile.getOriginalFilename());
+            entity.setProfilePath(cloudfront + datePath + "/" + convName);
+        }
+        repo.save(entity);
     }
 
     // 로그인
@@ -105,7 +126,6 @@ public class WoonUserController {
         WoonUser entity = new WoonUser();
         entity = repo.findUserByUserEmail(dto.getUserEmail());
         entity.setPassword(dto.getPassword());
-
         repo.save(entity);
     }
 
@@ -114,50 +134,52 @@ public class WoonUserController {
     public void deleteById(@PathVariable String id) {
         WoonUser entity = new WoonUser();
         entity = repo.findUserByUserEmail(id);
-
         repo.deleteById(entity.getUno());
     }
 
-    // 비밀번호 찾기
-
-    
     // 개인정보 수정 (프로필사진)
     @PostMapping("/modiprofile")
-    public String profileImg(@RequestParam("user") String id, @RequestParam("file") MultipartFile uploadfile) throws Exception {
-        System.out.println("=============================================================");
+    public WoonUserDTO profileImg(@RequestParam("user") String id, @RequestParam("file") MultipartFile uploadfile)
+            throws Exception {
         WoonUser entity = new WoonUser();
         entity = repo.findUserByUserEmail(id);
-        
-        // 업로드 경로 설정
-        // String uploadPath = "C:/Woon_Img";
-        String uploadPath = "C:/ProjectWoon/frontend/public/local_img/woon/profile";
-        // C:/ProjectWoon/frontend/public/local_img/woon/profile
-		SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH");
-        String datePath = sdf.format(new Date());
-        String ext = "";
-        // System.out.println(uploadfile.getOriginalFilename());
-        int index = uploadfile.getOriginalFilename().lastIndexOf(".");
-		
-		if(index != -1) {
-			ext = uploadfile.getOriginalFilename().substring(index);
-		} // if
-        File file = new File(uploadPath + datePath); 
-		if(file.exists() == false) {
-			file.mkdirs();
-        } // if
-        
-        //이미지 이름 중복 방지를 위한 파일이름 랜덤생성
-        String uName = UUID.randomUUID().toString();
-		uploadfile.transferTo(new File(uploadPath + datePath, uName + ext));
 
+        String datePath = new SimpleDateFormat("/yyyy/MM/dd/HH").format(new Date());
+        AWSCredentials awsCredentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);
+
+        s3 = AmazonS3ClientBuilder.standard().withRegion(clientRegion)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
+
+        // 파일명 중복 방지
+        String uName = UUID.randomUUID().toString();
+        String ext = FilenameUtils.getExtension(uploadfile.getOriginalFilename());
+        String convName = uName + "." + ext;
+        // s3 업로드를 위해 multipart -> File convert
+        File convfile = new File(convName);
+        convfile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convfile);
+        fos.write(uploadfile.getBytes());
+        fos.close();
+
+        if (s3 != null) {
+            try {
+                PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME + datePath, convName, convfile);
+                putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead); // file permission
+                s3.putObject(putObjectRequest);
+            } catch (Exception e) {
+                // TODO: handle exception
+            } finally {
+                s3 = null;
+            }
+        }
         entity.setProfile(uploadfile.getOriginalFilename());
-        entity.setProfilePath("/local_img/woon/profile" + datePath + "/" + uName + ext);
+        entity.setProfilePath(cloudfront + datePath + "/" + convName);
 
         repo.save(entity);
-        // map.put("result", "sss");
-		return "이미지변경";
+        return config.modelMapper().map(entity, WoonUserDTO.class);
     }
 
+    // 비밀번호 찾기
     @PostMapping("/findpass")
     public WoonUserDTO tempPassMail(@RequestBody WoonUserDTO dto) {
         WoonUser entity = new WoonUser();
@@ -165,34 +187,24 @@ public class WoonUserController {
 
         // 임시비밀번호 생성
         Random rd = new Random();
-		StringBuffer sb = new StringBuffer();
-        
+        StringBuffer sb = new StringBuffer();
+
         for (int i = 0; i < 6; i++) {
             if (rd.nextBoolean()) {
-                sb.append((char)((int)(rd.nextInt(26))+97));
+                sb.append((char) ((int) (rd.nextInt(26)) + 97));
             } else {
                 sb.append((rd.nextInt(10)));
             }
         }
-        System.out.println("랜덤 생성 : " + sb.toString());
         entity.setPassword(sb.toString());
         repo.save(entity);
-        
+
         String subject = "[Woon] 요청하신 아이디의 임시비밀번호 입니다.";
-        String content = "<!DOCTYPE html>"
-      +"<html lang='en'>"
-      +"<head>"
-      +"    <meta charset='UTF-8'>"
-      +"    <meta name='viewport' content='width=device-width, initial-scale=1.0'>"
-      +"    <meta http-equiv='X-UA-Compatible' content='ie=edge'>"
-      +"    <title>Document</title>"
-      +"</head>"
-      +"<body>"
-      + dto.getUserName() + "님의 요청에 의해 임시 비밀번호를 발급해 드립니다.</p><p>"
-      +"임시 비밀번호 : " + sb.toString()+"</p>"
-      +"<p>로그인 후에 비밀번호를 반드시 변경해주십시오.</p>"
-      +"</body>"
-      +"</html>";
+        String content = "<!DOCTYPE html>" + "<html lang='en'>" + "<head>" + "    <meta charset='UTF-8'>"
+                + "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+                + "    <meta http-equiv='X-UA-Compatible' content='ie=edge'>" + "    <title>Document</title>"
+                + "</head>" + "<body>" + dto.getUserName() + "님의 요청에 의해 임시 비밀번호를 발급해 드립니다.</p><p>" + "임시 비밀번호 : "
+                + sb.toString() + "</p>" + "<p>로그인 후에 비밀번호를 반드시 변경해주십시오.</p>" + "</body>" + "</html>";
 
         gmail.sendMail(dto.getUserEmail(), subject, content);
 

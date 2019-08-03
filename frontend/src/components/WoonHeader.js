@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import { Box, Button, Text, Anchor, DropButton } from 'grommet'
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history'
 import WoonLogin from './User/WoonLogin'
-import 'css/bigvideo.css'
-import 'css/WoonHeader.css'
+
 class WoonHeader extends Component {
-  state = { open: false, reload: false }
+  state = { open: false, reload: false, loginUser: '' }
   constructor (props) {
-    const history = createBrowserHistory();
     super(props)
     this.onOpen = this.onOpen.bind(this)
     this.onClose = this.onClose.bind(this)
     this.fn = props.fn
-    // this.mypage = this.mypage.bind(this)
   }
   onOpen = () => {
     this.setState({ open: true })
@@ -25,55 +22,93 @@ class WoonHeader extends Component {
   }
   renderItems = () => (
     <Box className='headerMenu'>
-      <Anchor  href='/mypage' style={{
-        boxSizing: "border-box",
-        cursor: "pointer",
-        font: "inherit",
-        marginTop: "0",
-        textDecoration: "none",
-        background: "transparent",
-        overflow: "visible",
-        textTransform: "none",
-        color: "inherit",
-        border: "none",
-        paddingTop: "2px",
-        paddingBottom: "2px",
-        textAlign: "inherit",
-        color: "#444444",
-        borderBottom: "#444444"
-      }}>마이페이지</Anchor>
-      <Anchor style={{
-        boxSizing: "border-box",
-        cursor: "pointer",
-        font: "inherit",
-        marginTop: "0",
-        textDecoration: "none",
-        background: "transparent",
-        overflow: "visible",
-        textTransform: "none",
-        color: "inherit",
-        border: "none",
-        paddingTop: "2px",
-        paddingBottom: "2px",
-        textAlign: "inherit",
-        color: "#444444",
-        borderBottom: "#444444"
-      }} onClick={this.logout}>로그아웃</Anchor>
+      <Anchor
+        href='/mypage'
+        style={{
+          boxSizing: 'border-box',
+          cursor: 'pointer',
+          font: 'inherit',
+          marginTop: '0',
+          textDecoration: 'none',
+          background: 'transparent',
+          overflow: 'visible',
+          textTransform: 'none',
+          color: 'inherit',
+          border: 'none',
+          paddingTop: '2px',
+          paddingBottom: '2px',
+          textAlign: 'inherit',
+          color: '#444444',
+          borderBottom: '#444444'
+        }}
+      >
+        마이페이지
+      </Anchor>
+      <Anchor
+        href='/grouplistpage'
+        style={{
+          boxSizing: 'border-box',
+          cursor: 'pointer',
+          font: 'inherit',
+          marginTop: '0',
+          textDecoration: 'none',
+          background: 'transparent',
+          overflow: 'visible',
+          textTransform: 'none',
+          color: 'inherit',
+          border: 'none',
+          paddingTop: '2px',
+          paddingBottom: '2px',
+          textAlign: 'inherit',
+          color: '#444444',
+          borderBottom: '#444444'
+        }}
+      >
+        그룹페이지
+      </Anchor>
+      <Anchor
+        style={{
+          boxSizing: 'border-box',
+          cursor: 'pointer',
+          font: 'inherit',
+          marginTop: '0',
+          textDecoration: 'none',
+          background: 'transparent',
+          overflow: 'visible',
+          textTransform: 'none',
+          color: 'inherit',
+          border: 'none',
+          paddingTop: '2px',
+          paddingBottom: '2px',
+          textAlign: 'inherit',
+          color: '#444444',
+          borderBottom: '#444444'
+        }}
+        onClick={this.logout}
+      >
+        로그아웃
+      </Anchor>
     </Box>
   )
 
   render () {
     const temp = sessionStorage.getItem('loginId')
+    const loginimg = sessionStorage.getItem('loginProfile')
+
+    let profilePath =
+      loginimg === 'null'
+        ? 'url(//icon-library.net//images/default-profile-icon/default-profile-icon-24.jpg)'
+        : 'url(' + loginimg + ')'
 
     const { open } = this.state
-    let fontcolor={
-      fontFamily: "Nanum Gothic, sans-serif",
-      fontWeight:"bold", 
-      color:"white"
+    let fontcolor = {
+      fontFamily: 'Nanum Gothic, sans-serif',
+      fontWeight: 'bold',
+      color: 'white'
     }
-    let headerProfile={  
-        marginTop: "0px",
-        marginBottom: "0px"
+    let headerProfile = {
+      marginTop: '0px',
+      marginBottom: '0px'
     }
     let loginArea =
       temp == null ? (
@@ -92,8 +127,7 @@ class WoonHeader extends Component {
             height='29px'
             width='29px'
             round='full'
-            background='url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)'
-            // texture="url(//s.gravatar.com/avatar/b226da5c619b18b44eb95c30be393953?s=80)"
+            background={profilePath}
           />
         </DropButton>
       )
@@ -107,13 +141,10 @@ class WoonHeader extends Component {
         background='black'
       >
         <Button>
-          <Text size='large' className='test'>
+          <Text size='large' className='test' onClick={this.main}>
             Woon
           </Text>
         </Button>
-        {/* <Button className='test primary' onClick={this.onOpen}>
-          로그인
-        </Button> */}
         {loginArea}
         {open && <WoonLogin onClick={this.LoginClose} test={this.fn} />}
       </Box>
@@ -121,16 +152,21 @@ class WoonHeader extends Component {
   }
 
   check = () => {
-    // alert('check')
     this.setState({ reload: !this.state.reload })
   }
   logout = () => {
     const history = createBrowserHistory()
-    alert('로그아웃 완료')
+    alert('로그아웃 되었습니다.')
     sessionStorage.clear()
-    history.push("/")
+    history.push('/')
     this.check()
-    window.location.reload();
+    window.location.reload()
+  }
+  main = e => {
+    const history = createBrowserHistory()
+    e.preventDefault()
+    history.push('/')
+    window.location.reload()
   }
 }
 
